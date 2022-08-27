@@ -9,7 +9,6 @@ import 'package:quid_faciam_hodie/screens/calendar_screen.dart';
 import 'package:quid_faciam_hodie/screens/grant_permission_screen.dart';
 import 'package:quid_faciam_hodie/screens/login_screen.dart';
 import 'package:quid_faciam_hodie/screens/main_screen.dart';
-import 'package:quid_faciam_hodie/screens/server_loading_screen.dart';
 import 'package:quid_faciam_hodie/screens/settings_screen.dart';
 import 'package:quid_faciam_hodie/screens/timeline_screen.dart';
 import 'package:quid_faciam_hodie/screens/welcome_screen.dart';
@@ -70,7 +69,7 @@ class _MyAppState extends State<MyApp> {
     return ChangeNotifierProvider.value(
       value: memories,
       child: PlatformApp(
-        title: 'Quid faciam hodie?',
+        title: 'Relieve',
         material: (_, __) => MaterialAppData(
           theme: LIGHT_THEME_MATERIAL,
           darkTheme: DARK_THEME_MATERIAL,
@@ -88,13 +87,10 @@ class _MyAppState extends State<MyApp> {
           TimelineScreen.ID: (context) => const TimelineScreen(),
           GrantPermissionScreen.ID: (context) => const GrantPermissionScreen(),
           CalendarScreen.ID: (context) => const CalendarScreen(),
-          ServerLoadingScreen.ID: (context) => const ServerLoadingScreen(
-                isInitialLoading: true,
-              ),
           EmptyScreen.ID: (context) => const EmptyScreen(),
           SettingsScreen.ID: (context) => const SettingsScreen(),
         },
-        initialRoute: ServerLoadingScreen.ID,
+        initialRoute: WelcomeScreen.ID,
       ),
     );
   }

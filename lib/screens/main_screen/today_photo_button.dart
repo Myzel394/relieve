@@ -5,10 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:quid_faciam_hodie/constants/spacing.dart';
 import 'package:quid_faciam_hodie/enums.dart';
 import 'package:quid_faciam_hodie/models/memories.dart';
-import 'package:quid_faciam_hodie/screens/server_loading_screen.dart';
 import 'package:quid_faciam_hodie/screens/timeline_screen.dart';
-
-import '../../widgets/raw_memory_display.dart';
+import 'package:quid_faciam_hodie/widgets/raw_memory_display.dart';
 
 class TodayPhotoButton extends StatefulWidget {
   final VoidCallback onLeave;
@@ -83,11 +81,7 @@ class _TodayPhotoButtonState extends State<TodayPhotoButton> {
 
         await Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (context) => const ServerLoadingScreen(
-              nextScreen: TimelineScreen.ID,
-            ),
-          ),
+          MaterialPageRoute(builder: (context) => const TimelineScreen()),
         );
 
         widget.onComeBack();

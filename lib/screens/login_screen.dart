@@ -5,7 +5,6 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:quid_faciam_hodie/constants/spacing.dart';
 import 'package:quid_faciam_hodie/extensions/snackbar.dart';
 import 'package:quid_faciam_hodie/managers/authentication_manager.dart';
-import 'package:quid_faciam_hodie/screens/server_loading_screen.dart';
 import 'package:quid_faciam_hodie/utils/loadable.dart';
 import 'package:quid_faciam_hodie/widgets/icon_button_child.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -51,11 +50,9 @@ class _LoginScreenState extends AuthState<LoginScreen> with Loadable {
       return;
     }
 
-    Navigator.push(
+    Navigator.pushReplacementNamed(
       context,
-      MaterialPageRoute(
-        builder: (context) => const ServerLoadingScreen(),
-      ),
+      MainScreen.ID,
     );
   }
 

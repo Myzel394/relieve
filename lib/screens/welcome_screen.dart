@@ -1,11 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:quid_faciam_hodie/constants/spacing.dart';
-import 'package:quid_faciam_hodie/constants/values.dart';
-import 'package:quid_faciam_hodie/managers/photo_manager.dart';
 import 'package:quid_faciam_hodie/screens/welcome_screen/pages/view_memories_page.dart';
 
 import 'welcome_screen/pages/create_memories_page.dart';
@@ -24,35 +20,13 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
-  NetworkImage? _initialImageForPhotoSwitching;
   final controller = PageController();
-
-  @override
-  void initState() {
-    super.initState();
-
-    getInitialImageForPhotoSwitching();
-  }
 
   @override
   void dispose() {
     controller.dispose();
 
     super.dispose();
-  }
-
-  void getInitialImageForPhotoSwitching() async {
-    final query = WELCOME_SCREEN_PHOTOS_QUERIES[
-        Random().nextInt(WELCOME_SCREEN_PHOTOS_QUERIES.length)];
-    final url = await PhotoManager.getRandomPhoto(query);
-
-    if (!mounted) {
-      return;
-    }
-
-    setState(() {
-      _initialImageForPhotoSwitching = NetworkImage(url);
-    });
   }
 
   void nextPage() {
@@ -74,10 +48,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             children: <Widget>[
               InitialPage(onNextPage: nextPage),
               CreateMemoriesPage(onNextPage: nextPage),
-              ViewMemoriesPage(
-                onNextPage: nextPage,
-                initialImage: _initialImageForPhotoSwitching,
-              ),
+              ViewMemoriesPage(onNextPage: nextPage),
               const GetStartedPage(),
             ],
           ),
