@@ -44,6 +44,10 @@
   "permissionsRequiredPageGrantCameraPermission": "Kamera-Berechtigung erteilen",
   "permissionsRequiredPageGrantMicrophonePermission": "Mikrofon-Berechtigung erteilen",
   "permissionsRequiredPageGrantLocationPermission": "Standort-Berechtigung erteilen",
+  "permissionsRequiredPageGrantMediaPermission": "Zugriff auf Medien erteilen",
+
+  "permissionsRequiredPageRequiredPermissionsLabel": "Zwingend benötigt",
+  "permissionsRequiredPageOptionalPermissionsLabel": "Optional",
 
 
   "memorySheetSavedToGallery": "In Gallerie gespeichert!",
