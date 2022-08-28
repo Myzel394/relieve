@@ -15,6 +15,7 @@ import 'package:quid_faciam_hodie/screens/welcome_screen.dart';
 
 import 'managers/global_values_manager.dart';
 import 'models/memories.dart';
+import 'native_events/window_focus.dart';
 import 'screens/empty_screen.dart';
 import 'utils/permissions.dart';
 
@@ -26,7 +27,9 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  GlobalValuesManager.initialize();
+  await GlobalValuesManager.initialize();
+
+  EventChannelWindowFocus.initialize();
 
   final initialPage = await StartupPageManager.getPageWithFallback();
   final hasGrantedPermissions = await hasGrantedRequiredPermissions();

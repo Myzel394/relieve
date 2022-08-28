@@ -19,6 +19,7 @@ import 'package:quid_faciam_hodie/foreign_types/memory.dart';
 import 'package:quid_faciam_hodie/foreign_types/memory_location.dart';
 import 'package:quid_faciam_hodie/managers/global_values_manager.dart';
 import 'package:quid_faciam_hodie/models/memories.dart';
+import 'package:quid_faciam_hodie/native_events/window_focus.dart';
 import 'package:quid_faciam_hodie/screens/main_screen/annotation_dialog.dart';
 import 'package:quid_faciam_hodie/screens/main_screen/camera_help_content.dart';
 import 'package:quid_faciam_hodie/screens/main_screen/cancel_recording_button.dart';
@@ -78,18 +79,28 @@ class _MainScreenState extends State<MainScreen> with Loadable {
     super.initState();
 
     loadSettings();
-    loadCameras();
+    onNewCameraSelected(GlobalValuesManager.cameras[0]);
+
+    EventChannelWindowFocus.addListener(loadCameraIfNecessary);
   }
 
   @override
   void dispose() {
     controller?.dispose();
+    EventChannelWindowFocus.removeListener(loadCameraIfNecessary);
+
     super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     _updateCamera(state);
+  }
+
+  void loadCameraIfNecessary(final bool isAppFocused) {
+    if (controller == null && isAppFocused) {
+      onNewCameraSelected(GlobalValuesManager.cameras[0]);
+    }
   }
 
   Future<void> loadSettings() async {
@@ -102,12 +113,6 @@ class _MainScreenState extends State<MainScreen> with Loadable {
 
       onNewCameraSelected(controller!.description);
     });
-  }
-
-  Future<void> loadCameras() async {
-    GlobalValuesManager.setCameras(await availableCameras());
-
-    onNewCameraSelected(GlobalValuesManager.cameras[0]);
   }
 
   void _updateCamera(final AppLifecycleState state) {
@@ -149,24 +154,25 @@ class _MainScreenState extends State<MainScreen> with Loadable {
       imageFormatGroup: ImageFormatGroup.jpeg,
     );
 
-    try {
-      cameraController.setFlashMode(FlashMode.off);
-    } catch (error) {}
-
     await previousCameraController?.dispose();
 
     if (!mounted) {
       return;
     }
 
-    controller = cameraController;
-
     // Update UI if controller updates
-    controller!.addListener(() {
+    cameraController.addListener(() {
       if (mounted) setState(() {});
     });
 
-    await controller!.initialize();
+    try {
+      await cameraController.initialize();
+    } catch (error) {
+      // Phone is off
+      return;
+    }
+
+    controller = cameraController;
     await controller!.prepareForVideoRecording();
 
     if (settings.recordOnStartup && !hasRecordedOnStartup) {

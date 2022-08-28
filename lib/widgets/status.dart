@@ -50,6 +50,8 @@ class _StatusState extends State<Status> with TickerProviderStateMixin {
   void dispose() {
     animationController?.dispose();
 
+    EventChannelWindowFocus.removeListener(pauseIfFocusLost);
+
     super.dispose();
   }
 
@@ -57,24 +59,25 @@ class _StatusState extends State<Status> with TickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    EventChannelWindowFocus.setGlobalListener((hasFocus) {
-      if (!widget.pauseOnLostFocus) {
-        return;
-      }
-
-      if (hasFocus && _wasAnimatingBeforeLostFocus) {
-        animationController?.forward();
-      } else if (!hasFocus) {
-        _wasAnimatingBeforeLostFocus =
-            animationController?.isAnimating ?? false;
-        animationController?.stop();
-      }
-    });
+    EventChannelWindowFocus.addListener(pauseIfFocusLost);
 
     if (widget.autoStart) {
       initializeAnimation();
     } else {
       _initializeControllerIfRequired();
+    }
+  }
+
+  void pauseIfFocusLost(final bool isAppFocused) {
+    if (!widget.pauseOnLostFocus) {
+      return;
+    }
+
+    if (isAppFocused && _wasAnimatingBeforeLostFocus) {
+      animationController?.forward();
+    } else if (!isAppFocused) {
+      _wasAnimatingBeforeLostFocus = animationController?.isAnimating ?? false;
+      animationController?.stop();
     }
   }
 
