@@ -26,6 +26,8 @@ import 'package:quid_faciam_hodie/screens/main_screen/annotation_dialog.dart';
 import 'package:quid_faciam_hodie/screens/main_screen/camera_help_content.dart';
 import 'package:quid_faciam_hodie/screens/main_screen/cancel_recording_button.dart';
 import 'package:quid_faciam_hodie/screens/main_screen/settings_button_overlay.dart';
+import 'package:quid_faciam_hodie/screens/main_screen/zoom_level_overlay.dart';
+import 'package:quid_faciam_hodie/utils/format_zoom_level.dart';
 import 'package:quid_faciam_hodie/utils/loadable.dart';
 import 'package:quid_faciam_hodie/utils/tag_location_to_image.dart';
 import 'package:quid_faciam_hodie/widgets/animate_in_builder.dart';
@@ -52,6 +54,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> with Loadable {
   int currentZoomLevelIndex = 0;
   double currentCameraZoomLevel = 1.0;
+  double baseZoomLevel = 1.0;
 
   bool hasRecordedOnStartup = false;
   bool isRecording = false;
@@ -62,16 +65,26 @@ class _MainScreenState extends State<MainScreen> with Loadable {
 
   CameraController? controller;
 
-  static String formatZoomLevel(double zoomLevel) {
-    if (zoomLevel.floor() == zoomLevel) {
-      // Zoom level is a whole number
-      return '${zoomLevel.floor()}x';
-    } else {
-      return '${zoomLevel.toStringAsFixed(1)}x';
-    }
-  }
+  int getCurrentZoomLevelIndex() {
+    int index = 0;
 
-  double get currentZoomLevel => zoomLevels![currentZoomLevelIndex];
+    // available zoom levels: [1, 2, 5, 10]
+    // current zoom level: 3
+    // current index should be `1`
+    for (final zoomLevel in zoomLevels!) {
+      if (zoomLevel == currentCameraZoomLevel) {
+        return index;
+      }
+
+      if (zoomLevel > currentCameraZoomLevel) {
+        return max(0, index - 1);
+      }
+
+      index++;
+    }
+
+    return zoomLevels!.length - 1;
+  }
 
   @override
   bool get isLoading =>
@@ -437,15 +450,23 @@ class _MainScreenState extends State<MainScreen> with Loadable {
           }
 
           return GestureDetector(
+            onScaleEnd: (_) {
+              baseZoomLevel = currentCameraZoomLevel;
+            },
             onScaleUpdate: (details) {
               if (zoomLevels == null || controller == null) {
                 return;
               }
 
-              final newZoomLevel = max(
+              final newZoomLevel = double.parse(
+                max(
                   zoomLevels!.first,
-                  min(zoomLevels!.last,
-                      currentCameraZoomLevel * details.scale));
+                  min(
+                    zoomLevels!.last,
+                    baseZoomLevel * details.scale,
+                  ),
+                ).toStringAsFixed(1),
+              );
 
               setState(() {
                 currentCameraZoomLevel = newZoomLevel;
@@ -479,6 +500,9 @@ class _MainScreenState extends State<MainScreen> with Loadable {
                                 fit: StackFit.expand,
                                 children: <Widget>[
                                   controller!.buildPreview(),
+                                  ZoomLevelOverlay(
+                                    zoomLevel: currentCameraZoomLevel,
+                                  ),
                                   if (isRecording)
                                     RecordingOverlay(controller: controller!),
                                   if (!isRecording)
@@ -652,6 +676,8 @@ class _MainScreenState extends State<MainScreen> with Loadable {
                             onPressed: zoomLevels == null
                                 ? null
                                 : () {
+                                    final currentZoomLevelIndex =
+                                        getCurrentZoomLevelIndex();
                                     final newZoomLevelIndex =
                                         ((currentZoomLevelIndex + 1) %
                                             zoomLevels!.length);
@@ -660,13 +686,14 @@ class _MainScreenState extends State<MainScreen> with Loadable {
                                         zoomLevels![newZoomLevelIndex]);
 
                                     setState(() {
-                                      currentZoomLevelIndex = newZoomLevelIndex;
+                                      currentCameraZoomLevel =
+                                          zoomLevels![newZoomLevelIndex];
                                     });
                                   },
                             child: zoomLevels == null
                                 ? Text(formatZoomLevel(1.0))
                                 : Text(
-                                    formatZoomLevel(currentZoomLevel),
+                                    formatZoomLevel(currentCameraZoomLevel),
                                   ),
                           ),
                         ],

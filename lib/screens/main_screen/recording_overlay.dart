@@ -93,8 +93,12 @@ class _RecordingOverlayState extends State<RecordingOverlay> {
                 localizations.recordingOverlayIsRecording,
                 style: platformThemeData(
                   context,
-                  material: (data) => data.textTheme.bodyLarge,
-                  cupertino: (data) => data.textTheme.textStyle,
+                  material: (data) => data.textTheme.bodyLarge!.copyWith(
+                    color: Colors.white,
+                  ),
+                  cupertino: (data) => data.textTheme.textStyle.copyWith(
+                    color: Colors.white,
+                  ),
                 ),
               ),
               const SizedBox(width: SMALL_SPACE),
@@ -102,8 +106,12 @@ class _RecordingOverlayState extends State<RecordingOverlay> {
                 getFormattedTime(),
                 style: platformThemeData(
                   context,
-                  material: (data) => data.textTheme.bodyLarge,
-                  cupertino: (data) => data.textTheme.textStyle,
+                  material: (data) => data.textTheme.bodyLarge!.copyWith(
+                    color: Colors.white,
+                  ),
+                  cupertino: (data) => data.textTheme.textStyle.copyWith(
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ],
