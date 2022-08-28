@@ -1,23 +1,10 @@
-import 'dart:async';
-import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:provider/provider.dart';
-import 'package:quid_faciam_hodie/constants/spacing.dart';
 import 'package:quid_faciam_hodie/enums.dart';
 import 'package:quid_faciam_hodie/foreign_types/memory.dart';
-import 'package:quid_faciam_hodie/models/timeline.dart';
 import 'package:quid_faciam_hodie/widgets/raw_memory_display.dart';
 import 'package:video_player/video_player.dart';
-
-enum MemoryFetchStatus {
-  downloading,
-  error,
-  done,
-}
 
 class MemoryView extends StatefulWidget {
   final Memory memory;
@@ -38,140 +25,29 @@ class MemoryView extends StatefulWidget {
 }
 
 class _MemoryViewState extends State<MemoryView> {
-  MemoryFetchStatus status = MemoryFetchStatus.downloading;
-  File? file;
-  Timer? _nextMemoryTimer;
-
-  @override
-  void initState() {
-    super.initState();
-
-    loadMemoryFile();
-  }
-
-  @override
-  void dispose() {
-    _nextMemoryTimer?.cancel();
-
-    super.dispose();
-  }
-
-  Future<void> loadMemoryFile() async {
-    final timeline = context.read<TimelineModel>();
-
-    setState(() {
-      status = MemoryFetchStatus.downloading;
-    });
-
-    try {
-      final downloadedFile = await widget.memory.downloadToFile();
-
-      if (!mounted) {
-        return;
-      }
-
-      setState(() {
-        status = MemoryFetchStatus.done;
-        file = downloadedFile;
-      });
-
-      if (widget.onFileDownloaded != null) {
-        widget.onFileDownloaded!();
-      }
-    } catch (error) {
-      if (!mounted) {
-        return;
-      }
-
-      setState(() {
-        status = MemoryFetchStatus.error;
-      });
-
-      _nextMemoryTimer = Timer(
-        const Duration(seconds: 1),
-        timeline.nextMemory,
-      );
-
-      return;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!;
-
-    if (status == MemoryFetchStatus.error) {
-      return Center(
-        child: Text(
-          localizations.memoryViewDownloadFailed,
-          style: platformThemeData(
-            context,
-            material: (data) => data.textTheme.bodyText2!.copyWith(
-              color: Colors.white,
-            ),
-            cupertino: (data) => data.textTheme.textStyle.copyWith(
-              color: Colors.white,
-            ),
-          ),
-        ),
-      );
-    }
-
-    if (status == MemoryFetchStatus.done) {
-      return Stack(
-        fit: StackFit.expand,
-        alignment: Alignment.center,
-        children: <Widget>[
-          if (widget.memory.type == MemoryType.photo)
-            ImageFiltered(
-              imageFilter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
-              child: RawMemoryDisplay(
-                file: file!,
-                type: widget.memory.type,
-                loopVideo: widget.loopVideo,
-                fit: BoxFit.cover,
-              ),
-            ),
-          RawMemoryDisplay(
-            file: file!,
-            type: widget.memory.type,
-            fit: BoxFit.contain,
-            loopVideo: widget.loopVideo,
-            onVideoControllerInitialized: widget.onVideoControllerInitialized,
-          ),
-        ],
-      );
-    }
-
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
+    return Stack(
+      fit: StackFit.expand,
+      alignment: Alignment.center,
       children: <Widget>[
-        PlatformCircularProgressIndicator(
-          cupertino: (_, __) => CupertinoProgressIndicatorData(
-            color: Colors.white,
+        if (widget.memory.type == MemoryType.photo)
+          ImageFiltered(
+            imageFilter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+            child: RawMemoryDisplay(
+              file: widget.memory.file,
+              type: widget.memory.type,
+              loopVideo: widget.loopVideo,
+              fit: BoxFit.cover,
+            ),
           ),
+        RawMemoryDisplay(
+          file: widget.memory.file,
+          type: widget.memory.type,
+          fit: BoxFit.contain,
+          loopVideo: widget.loopVideo,
+          onVideoControllerInitialized: widget.onVideoControllerInitialized,
         ),
-        const SizedBox(height: SMALL_SPACE),
-        () {
-          switch (status) {
-            case MemoryFetchStatus.downloading:
-              return Text(
-                localizations.memoryViewIsDownloading,
-                style: platformThemeData(
-                  context,
-                  material: (data) => data.textTheme.bodyText2!.copyWith(
-                    color: Colors.white,
-                  ),
-                  cupertino: (data) => data.textTheme.textStyle.copyWith(
-                    color: Colors.white,
-                  ),
-                ),
-              );
-            default:
-              return const SizedBox();
-          }
-        }(),
       ],
     );
   }

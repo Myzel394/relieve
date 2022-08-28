@@ -26,19 +26,22 @@ class Memories extends PropertyChangeNotifier<String> {
 
     return Memories(
       memories: memories,
-    )..sortMemories();
+    ).._sortMemories();
   }
 
   List<Memory> get memories => _memories;
+  Memory? get latest => _memories.firstOrNull;
 
   Future<void> addMemory(final Memory memory) async {
     _memories.add(memory);
+    _sortMemories();
     notifyListeners('memories');
     await save();
   }
 
   Future<void> removeMemory(final Memory memory) async {
     _memories.remove(memory);
+    _sortMemories();
     notifyListeners('memories');
     await save();
   }
@@ -53,9 +56,8 @@ class Memories extends PropertyChangeNotifier<String> {
     await removeMemory(memory);
   }
 
-  void sortMemories() {
+  void _sortMemories() {
     _memories.sort((a, b) => b.creationDate.compareTo(a.creationDate));
-    notifyListeners('memories');
   }
 
   Future<void> save() async {

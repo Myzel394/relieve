@@ -13,14 +13,14 @@ const uuid = Uuid();
 class Memory {
   final String id;
   final DateTime creationDate;
-  final String filePath;
+  final File file;
   final String annotation;
   final MemoryLocation? location;
 
   const Memory({
     required this.id,
     required this.creationDate,
-    required this.filePath,
+    required this.file,
     required this.annotation,
     this.location,
   });
@@ -28,7 +28,7 @@ class Memory {
   static parse(final Map<String, dynamic> jsonData) => Memory(
         id: jsonData['id'],
         creationDate: DateTime.parse(jsonData['created_at']),
-        filePath: jsonData['file_path'],
+        file: File(jsonData['file_path']),
         annotation: jsonData['annotation'],
         location: MemoryLocation.parse(jsonData['location']),
       );
@@ -45,25 +45,23 @@ class Memory {
     final filename = '$id${extension(file.path)}';
     final path = '${documentDirectory.path}/$filename';
 
+    await file.copy(path);
+
     return Memory(
       annotation: annotation ?? '',
       creationDate: creationDate,
-      filePath: path,
+      file: File(path),
       id: id,
       location: location,
     );
   }
 
-  String get filename => basename(filePath);
+  String get filename => basename(file.path);
 
   MemoryType get type =>
       filename.split('.').last == 'jpg' ? MemoryType.photo : MemoryType.video;
 
-  Future<File> downloadToFile() => throw Exception('not implemented');
-
   Future<void> saveFileToGallery() async {
-    final file = await downloadToFile();
-
     switch (type) {
       case MemoryType.photo:
         await GallerySaver.saveImage(file.path);
@@ -77,7 +75,7 @@ class Memory {
   Map<String, dynamic> toJSON() => {
         'id': id,
         'created_at': creationDate.toIso8601String(),
-        'file_path': filePath,
+        'file_path': file.path,
         'annotation': annotation,
         'location': location?.toJSON(),
       };
