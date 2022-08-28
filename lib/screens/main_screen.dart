@@ -320,7 +320,7 @@ class _MainScreenState extends State<MainScreen> with Loadable {
   }
 
   Future<void> takeVideo() async {
-    final memories = context.watch<Memories>();
+    final memories = context.read<Memories>();
     final localizations = AppLocalizations.of(context)!;
 
     if (!controller!.value.isRecordingVideo) {
@@ -347,10 +347,6 @@ class _MainScreenState extends State<MainScreen> with Loadable {
       if (!mounted) {
         return;
       }
-
-      context.showPendingSnackBar(
-        message: localizations.mainScreenTakeVideoActionUploadingVideo,
-      );
 
       try {
         final memory = await Memory.createFromFile(
