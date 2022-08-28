@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:quid_faciam_hodie/constants/spacing.dart';
+import 'package:quid_faciam_hodie/managers/startup_page_manager.dart';
 import 'package:quid_faciam_hodie/screens/main_screen.dart';
 import 'package:quid_faciam_hodie/screens/welcome_screen/crabs/logo.dart';
 import 'package:quid_faciam_hodie/utils/theme.dart';
@@ -37,7 +38,9 @@ class GetStartedPage extends StatelessWidget {
                 icon: Icon(context.platformIcons.forward),
                 label: Text(localizations.welcomeScreenStartButtonTitle),
               ),
-              onPressed: () {
+              onPressed: () async {
+                await StartupPageManager.setPage(MainScreen.ID);
+
                 Navigator.pushReplacementNamed(context, MainScreen.ID);
               },
             ),
