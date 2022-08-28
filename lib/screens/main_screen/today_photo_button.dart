@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:quid_faciam_hodie/constants/spacing.dart';
 import 'package:quid_faciam_hodie/enums.dart';
 import 'package:quid_faciam_hodie/models/memories.dart';
+import 'package:quid_faciam_hodie/screens/empty_screen.dart';
 import 'package:quid_faciam_hodie/screens/timeline_screen.dart';
 import 'package:quid_faciam_hodie/widgets/raw_memory_display.dart';
 
@@ -77,6 +78,16 @@ class _TodayPhotoButtonState extends State<TodayPhotoButton> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
+        final memories = context.read<Memories>();
+
+        if (memories.memories.isEmpty) {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const EmptyScreen()),
+          );
+          return;
+        }
+
         widget.onLeave();
 
         await Navigator.push(
