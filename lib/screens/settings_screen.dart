@@ -5,13 +5,14 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 import 'package:quid_faciam_hodie/constants/spacing.dart';
 import 'package:quid_faciam_hodie/enum_mapping/record_button_behavior/texts.dart';
 import 'package:quid_faciam_hodie/enum_mapping/resolution_preset/texts.dart';
 import 'package:quid_faciam_hodie/enums/record_button_behavior.dart';
 import 'package:quid_faciam_hodie/extensions/snackbar.dart';
-import 'package:quid_faciam_hodie/managers/global_values_manager.dart';
 import 'package:quid_faciam_hodie/managers/user_help_sheets_manager.dart';
+import 'package:quid_faciam_hodie/models/settings.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 import 'settings_screen/dropdown_tile.dart';
@@ -33,13 +34,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void initState() {
     super.initState();
-
-    final settings = GlobalValuesManager.settings!;
-
-    // Update UI when settings change
-    settings.addListener(() {
-      setState(() {});
-    });
 
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
@@ -67,7 +61,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final settings = GlobalValuesManager.settings!;
+    final settings = context.watch<Settings>();
     final localizations = AppLocalizations.of(context)!;
 
     return PlatformScaffold(

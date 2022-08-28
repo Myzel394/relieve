@@ -15,6 +15,7 @@ import 'package:quid_faciam_hodie/screens/welcome_screen.dart';
 
 import 'managers/global_values_manager.dart';
 import 'models/memories.dart';
+import 'models/settings.dart';
 import 'native_events/window_focus.dart';
 import 'screens/empty_screen.dart';
 import 'utils/permissions.dart';
@@ -34,6 +35,7 @@ void main() async {
   final initialPage = await StartupPageManager.getPageWithFallback();
   final hasGrantedPermissions = await hasGrantedRequiredPermissions();
   final memories = await Memories.restore();
+  final settings = await Settings.restore();
 
   runApp(
     MyApp(
@@ -41,6 +43,7 @@ void main() async {
           ? GrantPermissionScreen.ID
           : initialPage,
       memories: memories,
+      settings: settings,
     ),
   );
 }
@@ -48,17 +51,22 @@ void main() async {
 class MyApp extends StatelessWidget {
   final String initialPage;
   final Memories memories;
+  final Settings settings;
 
   const MyApp({
     required this.initialPage,
     required this.memories,
+    required this.settings,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-      value: memories,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: memories),
+        ChangeNotifierProvider.value(value: settings),
+      ],
       child: PlatformApp(
         title: 'Relieve',
         material: (_, __) => MaterialAppData(

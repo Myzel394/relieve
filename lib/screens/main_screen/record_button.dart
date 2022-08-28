@@ -1,8 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:quid_faciam_hodie/enums/record_button_behavior.dart';
-import 'package:quid_faciam_hodie/managers/global_values_manager.dart';
+import 'package:quid_faciam_hodie/models/settings.dart';
 
 class RecordButton extends StatefulWidget {
   final bool active;
@@ -40,24 +41,8 @@ class _RecordButtonState extends State<RecordButton> {
   }
 
   @override
-  void initState() {
-    super.initState();
-
-    final settings = GlobalValuesManager.settings!;
-
-    // Update UI when settings change
-    settings.addListener(() {
-      if (!mounted) {
-        return;
-      }
-
-      setState(() {});
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final settings = GlobalValuesManager.settings!;
+    final settings = context.watch<Settings>();
 
     return GestureDetector(
       // Take photo

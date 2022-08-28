@@ -19,6 +19,7 @@ import 'package:quid_faciam_hodie/foreign_types/memory.dart';
 import 'package:quid_faciam_hodie/foreign_types/memory_location.dart';
 import 'package:quid_faciam_hodie/managers/global_values_manager.dart';
 import 'package:quid_faciam_hodie/models/memories.dart';
+import 'package:quid_faciam_hodie/models/settings.dart';
 import 'package:quid_faciam_hodie/native_events/window_focus.dart';
 import 'package:quid_faciam_hodie/screens/main_screen/annotation_dialog.dart';
 import 'package:quid_faciam_hodie/screens/main_screen/camera_help_content.dart';
@@ -104,7 +105,7 @@ class _MainScreenState extends State<MainScreen> with Loadable {
   }
 
   Future<void> loadSettings() async {
-    final settings = GlobalValuesManager.settings!;
+    final settings = context.read<Settings>();
 
     settings.addListener(() {
       if (!mounted || controller == null) {
@@ -116,17 +117,16 @@ class _MainScreenState extends State<MainScreen> with Loadable {
   }
 
   void _updateCamera(final AppLifecycleState state) {
-    final CameraController? cameraController = controller;
-
     // App state changed before we got the chance to initialize.
-    if (cameraController == null || !cameraController.value.isInitialized) {
+    if (controller == null || controller?.value.isInitialized != true) {
       return;
     }
 
     if (state == AppLifecycleState.inactive) {
-      cameraController.dispose();
+      controller?.dispose();
     } else if (state == AppLifecycleState.resumed) {
-      onNewCameraSelected(cameraController.description);
+      onNewCameraSelected(
+          controller?.description ?? GlobalValuesManager.cameras[0]);
     }
   }
 
@@ -144,8 +144,14 @@ class _MainScreenState extends State<MainScreen> with Loadable {
   }
 
   void onNewCameraSelected(final CameraDescription cameraDescription) async {
-    final settings = GlobalValuesManager.settings!;
+    final settings = context.read<Settings>();
     final previousCameraController = controller;
+
+    setState(() {
+      controller = null;
+    });
+
+    await previousCameraController?.dispose();
 
     // Instantiating the camera controller
     final CameraController cameraController = CameraController(
@@ -154,9 +160,10 @@ class _MainScreenState extends State<MainScreen> with Loadable {
       imageFormatGroup: ImageFormatGroup.jpeg,
     );
 
-    await previousCameraController?.dispose();
-
-    if (!mounted) {
+    try {
+      await cameraController.initialize();
+    } catch (error) {
+      // Phone is off
       return;
     }
 
@@ -164,13 +171,6 @@ class _MainScreenState extends State<MainScreen> with Loadable {
     cameraController.addListener(() {
       if (mounted) setState(() {});
     });
-
-    try {
-      await cameraController.initialize();
-    } catch (error) {
-      // Phone is off
-      return;
-    }
 
     controller = cameraController;
     await controller!.prepareForVideoRecording();
@@ -231,7 +231,7 @@ class _MainScreenState extends State<MainScreen> with Loadable {
       });
 
   Future<String?> getAnnotation() async {
-    final settings = GlobalValuesManager.settings!;
+    final settings = context.read<Settings>();
 
     if (settings.askForMemoryAnnotations) {
       return _createAskAnnotationDialog();
@@ -265,7 +265,7 @@ class _MainScreenState extends State<MainScreen> with Loadable {
   }
 
   Future<void> takePhoto() async {
-    final settings = GlobalValuesManager.settings!;
+    final settings = context.read<Settings>();
     final memories = context.read<Memories>();
     final localizations = AppLocalizations.of(context)!;
 
@@ -331,7 +331,7 @@ class _MainScreenState extends State<MainScreen> with Loadable {
   }
 
   Future<void> takeVideo() async {
-    final settings = GlobalValuesManager.settings!;
+    final settings = context.read<Settings>();
     final memories = context.read<Memories>();
     final localizations = AppLocalizations.of(context)!;
 
