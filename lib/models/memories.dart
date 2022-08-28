@@ -45,6 +45,8 @@ class Memories extends PropertyChangeNotifier<String> {
   }
 
   Future<void> removeMemory(final Memory memory) async {
+    await memory.delete();
+
     _memories.remove(memory);
     _sortMemories();
     notifyListeners('memories');

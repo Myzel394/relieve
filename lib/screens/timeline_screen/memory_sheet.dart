@@ -14,6 +14,8 @@ import 'package:quid_faciam_hodie/widgets/platform_widgets/memory_cupertino_maps
 import 'package:quid_faciam_hodie/widgets/platform_widgets/memory_material_maps.dart';
 import 'package:quid_faciam_hodie/widgets/sheet_indicator.dart';
 
+import 'memory_delete_dialog.dart';
+
 class MemorySheet extends StatefulWidget {
   final Memory memory;
   final BuildContext sheetContext;
@@ -32,9 +34,19 @@ class _MemorySheetState extends State<MemorySheet> with Loadable {
   bool isExpanded = false;
 
   Future<void> deleteFile() async {
-    throw Exception('Not implemented');
+    final closeSheet = await showPlatformDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (_) => MemoryDeleteDialog(
+        memory: widget.memory,
+      ),
+    );
 
-    if (mounted) {
+    if (!mounted) {
+      return;
+    }
+
+    if (closeSheet == true) {
       Navigator.pop(context);
     }
   }
@@ -153,13 +165,7 @@ class _MemorySheetState extends State<MemorySheet> with Loadable {
                   localizations.memorySheetDeleteMemory,
                   style: getBodyTextTextStyle(context),
                 ),
-                enabled: !getIsLoadingSpecificID('delete'),
-                onTap: getIsLoadingSpecificID('delete')
-                    ? null
-                    : () => callWithLoading(deleteFile, 'delete'),
-                trailing: getIsLoadingSpecificID('delete')
-                    ? buildLoadingIndicator()
-                    : null,
+                onTap: deleteFile,
               ),
               const SizedBox(height: MEDIUM_SPACE),
               Row(

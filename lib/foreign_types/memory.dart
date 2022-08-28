@@ -79,6 +79,10 @@ class Memory {
     }
   }
 
+  Future<void> delete() async {
+    await file.delete();
+  }
+
   Map<String, dynamic> toJSON() => {
         'id': id,
         'created_at': creationDate.toIso8601String(),

@@ -54,7 +54,7 @@
   "memorySheetTitle": "Erinnerung bearbeiten",
   "memorySheetDownloadMemory": "In Gallerie speichern",
   "memorySheetDeleteMemory": "Erinnerung löschen",
-  "memorySheetCreatedAtDataKey": "Erstellt am: {creationTime}",
+  "memorySheetCreatedAtDataKey": "Erstellt am {creationTime}",
   "memorySheetViewMoreDetails": "Mehr Details",
 
 
@@ -87,6 +87,11 @@
   "settingsScreenResetHelpSheetsLabel": "Hilf-Sheets zurücksetzen",
   "settingsScreenResetHelpSheetsResetSuccessfully": "Hilf-Sheets wurden zurückgesetzt.",
   "settingsScreenSaveToGalleryLabel": "Erinnerungen in Gallerie speichern",
+  "settingsScreenDeleteFileTitle": "Erinnerung löschen",
+  "settingsScreenDeleteFileDescription": "Bist du dir sicher, dass du diese Erinnerung löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden!",
+  "settingsScreenDeleteFileGalleryDeletionDescription": "Diese Erinnerung wurde bereits in deiner Gallerie gespeichert. Sie wird nicht von dort gelöscht. Sie wird nur aus Relieve gelöscht,",
+  "settingsScreenDeleteFileGalleryDeletionDownloadOffer": "Du kannst deine Erinnerung in deiner Galliere speichern bevor du sie löschst. Erinnerungen werden nicht aus deiner Gallerie gelöscht. Sie werden nur aus Relieve gelöscht.",
+  "settingsScreenDeleteFileDeleteLabel": "Löschen",
 
 
   "calendarScreenTitle": "Kalendar",
