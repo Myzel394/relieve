@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -5,10 +6,12 @@ import 'package:quid_faciam_hodie/constants/spacing.dart';
 
 class UploadingPhoto extends StatefulWidget {
   final Uint8List data;
+  final VoidCallback onDone;
 
   const UploadingPhoto({
     Key? key,
     required this.data,
+    required this.onDone,
   }) : super(key: key);
 
   @override
@@ -23,6 +26,7 @@ class _UploadingPhotoState extends State<UploadingPhoto>
   late final AnimationController controller;
   late final Animation<double> animation;
   bool animateOut = false;
+  Timer? _doneTimer;
 
   @override
   void initState() {
@@ -41,6 +45,18 @@ class _UploadingPhotoState extends State<UploadingPhoto>
 
     controller.forward();
 
+    controller.addListener(() {
+      if (controller.status == AnimationStatus.completed) {
+        _doneTimer = Timer(const Duration(milliseconds: 500), () {
+          if (!mounted) {
+            return;
+          }
+
+          widget.onDone();
+        });
+      }
+    });
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
         animateOut = true;
@@ -51,6 +67,7 @@ class _UploadingPhotoState extends State<UploadingPhoto>
   @override
   void dispose() {
     controller.dispose();
+    _doneTimer?.cancel();
 
     super.dispose();
   }

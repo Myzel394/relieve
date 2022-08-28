@@ -99,8 +99,11 @@ class _MainScreenState extends State<MainScreen> with Loadable {
   }
 
   void loadCameraIfNecessary(final bool isAppFocused) {
-    if (controller == null && isAppFocused) {
+    if (isAppFocused) {
       onNewCameraSelected(GlobalValuesManager.cameras[0]);
+    } else {
+      controller?.dispose();
+      controller = null;
     }
   }
 
@@ -145,13 +148,10 @@ class _MainScreenState extends State<MainScreen> with Loadable {
 
   void onNewCameraSelected(final CameraDescription cameraDescription) async {
     final settings = context.read<Settings>();
-    final previousCameraController = controller;
 
-    setState(() {
-      controller = null;
-    });
-
-    await previousCameraController?.dispose();
+    if (controller != null) {
+      await controller?.dispose();
+    }
 
     // Instantiating the camera controller
     final CameraController cameraController = CameraController(
@@ -326,7 +326,6 @@ class _MainScreenState extends State<MainScreen> with Loadable {
       );
     } finally {
       _releaseCamera();
-      _releaseUploadingPhotoAnimation();
     }
   }
 
@@ -460,6 +459,7 @@ class _MainScreenState extends State<MainScreen> with Loadable {
                                 if (uploadingPhotoAnimation != null)
                                   UploadingPhoto(
                                     data: uploadingPhotoAnimation!,
+                                    onDone: _releaseUploadingPhotoAnimation,
                                   ),
                               ],
                             ),
