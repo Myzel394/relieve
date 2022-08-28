@@ -1,5 +1,5 @@
 {
-  "appTitleQuestion": "Quid faciam hodie?",
+  "appTitleQuestion": "Relieve",
 
   "generalError": "There was an error",
   "generalCancelButtonLabel": "Cancel",
@@ -17,39 +17,12 @@
   "welcomeScreenViewMemoriesGuideDescription": "...and relieve your best moments at the end of the day!",
   "welcomeScreenGetStartedLabel": "Get started",
 
-  "welcomeScreenMemoriesDataMemoriesAmount": "You have created {count,plural, =0{no memories yet}} =1{one memory} other{{count} memories}}",
-  "@welcomeScreenMemoriesDataMemoriesAmount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "welcomeScreenMemoriesDataMemoriesSpanning": "Spanning from {startDate} to {endDate}",
-  "@welcomeScreenMemoriesDataMemoriesSpanning": {
-    "placeholders": {
-      "startDate": {
-        "type": "DateTime",
-        "format": "yMMMd"
-      },
-      "endDate": {
-        "type": "DateTime",
-        "format": "yMMMd"
-      }
-    }
-  },
-
-
-  "serverLoadingScreenDescription": "We are loading your data",
-
 
   "mainScreenActionsTorchButton": "Torch",
   "mainScreenUploadSuccess": "Uploaded successfully!",
 
   "mainScreenTakePhotoActionTakingPhoto": "Taking photo, please hold still...",
-  "mainScreenTakePhotoActionUploadingPhoto": "Uploading photo...",
   "mainScreenTakeVideoActionSaveVideo": "Taking video, please hold still...",
-  "mainScreenTakeVideoActionUploadingVideo": "Uploading video...",
 
   "mainScreenHelpSheetTitle": "Record your best moments in life",
   "mainScreenHelpSheetTakePhotoExplanation": "Tap on the shutter button once to take a photo.",
@@ -60,16 +33,6 @@
   "mainScreenAnnotationDialogAnnotationFieldLabel": "Annotation",
 
   "recordingOverlayIsRecording": "Recording",
-
-
-  "loginScreenTitle": "Login",
-  "loginScreenHelpText": "Sign in to your account. If you do not have one already, we will automatically set up one for you.",
-  "loginScreenFormEmailLabel": "Email",
-  "loginScreenFormPasswordLabel": "Password",
-  "loginScreenFormLoginButton": "Login",
-  "loginScreenFormSignUpButton": "Sign up",
-  "loginScreenLoginFailed": "Email or password incorrect",
-  "loginScreenSignUpFailed": "Registration failed. Maybe you already have an account?",
 
 
   "grantPermissionScreenTitle": "Grant Permissions",
@@ -83,17 +46,9 @@
   "permissionsRequiredPageGrantLocationPermission": "Grant location permission",
 
 
-  "memoryViewIsDownloading": "Downloading memory",
-  "memoryViewDownloadFailed": "Memory could not be loaded.",
-
-
   "memorySheetSavedToGallery": "Saved to Gallery!",
-  "memorySheetMemoryUpdatedToPublic": "Your Memory is public now!",
-  "memorySheetMemoryUpdatedToPrivate": "Your Memory is private now.",
   "memorySheetTitle": "Edit Memory",
   "memorySheetDownloadMemory": "Download to Gallery",
-  "memorySheetUpdateMemoryMakePublic": "Make Public",
-  "memorySheetUpdateMemoryMakePrivate": "Make Private",
   "memorySheetDeleteMemory": "Delete Memory",
   "memorySheetCreatedAtDataKey": "Created at: {creationTime}",
   "@memorySheetCreatedAtDataKey": {
@@ -150,13 +105,6 @@
 
 
   "settingsScreenTitle": "Settings",
-  "settingsScreenAccountSectionTitle": "Your Account",
-  "settingsScreenAccountSectionCreationDateLabel": "Account creation",
-  "settingsScreenAccountSectionLogoutLabel": "Log out",
-  "settingsScreenDangerSectionTitle": "Danger Zone",
-  "settingsScreenDangerSectionDeleteAccountLabel": "Delete Account",
-  "settingsScreenDeleteAccountDescription": "Are you sure you want to delete your account? This action cannot be undone! All your memories will be deleted as well.",
-  "settingsScreenDeleteAccountConfirmLabel": "Delete Account now",
   "settingsScreenGeneralSectionTitle": "General",
   "settingsScreenGeneralSectionQualityLabel": "Quality",
   "settingsScreenGeneralSectionRecordButtonBehaviorLabel": "Record Behavior",
@@ -172,6 +120,27 @@
     "placeholders": {
       "count": {
         "type": "int"
+      }
+    }
+  },
+  "calendarScreenMemoriesDataMemoriesAmount": "You have created {count,plural, =0{no memories yet}} =1{one memory} other{{count} memories}}",
+  "@calendarScreenMemoriesDataMemoriesAmount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "calendarScreenMemoriesDataMemoriesSpanning": "Spanning from {startDate} to {endDate}",
+  "@calendarScreenMemoriesDataMemoriesSpanning": {
+    "placeholders": {
+      "startDate": {
+        "type": "DateTime",
+        "format": "yMMMd"
+      },
+      "endDate": {
+        "type": "DateTime",
+        "format": "yMMMd"
       }
     }
   },

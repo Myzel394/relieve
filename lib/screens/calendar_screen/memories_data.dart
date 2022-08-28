@@ -19,14 +19,14 @@ class MemoriesData extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Text(
-              localizations.welcomeScreenMemoriesDataMemoriesAmount(
+              localizations.calendarScreenMemoriesDataMemoriesAmount(
                 memories.memories.length,
               ),
               style: getBodyTextTextStyle(context),
             ),
             const SizedBox(height: SMALL_SPACE),
             Text(
-              localizations.welcomeScreenMemoriesDataMemoriesSpanning(
+              localizations.calendarScreenMemoriesDataMemoriesSpanning(
                 memories.memories.last.creationDate,
                 memories.memories.first.creationDate,
               ),

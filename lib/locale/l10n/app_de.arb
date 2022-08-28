@@ -16,20 +16,13 @@
   "welcomeScreenCreateMemoriesGuideDescription": "Erstelle Fotos und Videos während des Tages auf...",
   "welcomeScreenViewMemoriesGuideDescription": "...und lebe deine Liebelingsmomente des Tages wieder!",
   "welcomeScreenGetStartedLabel": "Loslegen",
-  "welcomeScreenMemoriesDataMemoriesAmount": "Du hast {count,plural, =0{noch keine Erinnerungen}} =1{eine Erinnerung} other{{count} Erinnerungen}} erstellt",
-  "welcomeScreenMemoriesDataMemoriesSpanning": "Welche vom {startDate} bis zum {endDate} reichen",
-
-
-  "serverLoadingScreenDescription": "Wir laden deine Daten",
 
 
   "mainScreenActionsTorchButton": "Taschenlampe",
   "mainScreenUploadSuccess": "Erfolgreich hochgeladen",
 
   "mainScreenTakePhotoActionTakingPhoto": "Foto wird aufgenommen, halte still...",
-  "mainScreenTakePhotoActionUploadingPhoto": "Foto wird hochgeladen...",
   "mainScreenTakeVideoActionSaveVideo": "Video wird aufgenommen, halte still...",
-  "mainScreenTakeVideoActionUploadingVideo": "Video wird hochgeladen...",
 
   "mainScreenHelpSheetTitle": "Nimm deine besten Momente im Leben auf",
   "mainScreenHelpSheetTakePhotoExplanation": "Tippe einmal auf den Auslöser um ein Foto zu erstellen.",
@@ -40,16 +33,6 @@
   "mainScreenAnnotationDialogAnnotationFieldLabel": "Anmerkung",
 
   "recordingOverlayIsRecording": "Aufnahme",
-
-
-  "loginScreenTitle": "Anmelden",
-  "loginScreenHelpText": "Melde dich an. Wenn du noch keinen Account besitzt, erstellen wir automatisch einen für dich.",
-  "loginScreenFormEmailLabel": "E-Mail",
-  "loginScreenFormPasswordLabel": "Passwort",
-  "loginScreenFormLoginButton": "Anmelden",
-  "loginScreenFormSignUpButton": "Registrieren",
-  "loginScreenLoginFailed": "E-Mail oder Passwort inkorrekt",
-  "loginScreenSignUpFailed": "Registrierung fehlgeschlagen. Hast du eventuell schon einen Account?",
 
 
   "grantPermissionScreenTitle": "Berechtigungen erteilen",
@@ -63,17 +46,9 @@
   "permissionsRequiredPageGrantLocationPermission": "Standort-Berechtigung erteilen",
 
 
-  "memoryViewIsDownloading": "Erinnerung wird heruntergeladen",
-  "memoryViewDownloadFailed": "Erinnerung konnte nicht geladen werden.",
-
-
   "memorySheetSavedToGallery": "In Gallerie gespeichert!",
-  "memorySheetMemoryUpdatedToPublic": "Deine Erinnerung wurde veröffentlicht!",
-  "memorySheetMemoryUpdatedToPrivate": "Deine Erinnerung wurde auf privat gestellt.",
   "memorySheetTitle": "Erinnerung bearbeiten",
   "memorySheetDownloadMemory": "In Gallerie speichern",
-  "memorySheetUpdateMemoryMakePublic": "Veröffentlichen",
-  "memorySheetUpdateMemoryMakePrivate": "Privat machen",
   "memorySheetDeleteMemory": "Erinnerung löschen",
   "memorySheetCreatedAtDataKey": "Erstellt am: {creationTime}",
   "memorySheetViewMoreDetails": "Mehr Details",
@@ -100,15 +75,9 @@
 
 
   "settingsScreenTitle": "Einstellungen",
-  "settingsScreenAccountSectionTitle": "Dein Account",
-  "settingsScreenAccountSectionCreationDateLabel": "Account-Erstellung",
-  "settingsScreenAccountSectionLogoutLabel": "Abmelden",
-  "settingsScreenDangerSectionTitle": "Gefahrbereich",
-  "settingsScreenDangerSectionDeleteAccountLabel": "Account löschen",
-  "settingsScreenDeleteAccountDescription": "Bist du dir sicher, dass du deinen Account löschen möchtest? Diese Aktion kann nicht rückgangig gemacht werden! Deine Erfahrungen werden ebenfalls gelöscht.",
-  "settingsScreenDeleteAccountConfirmLabel": "Account jetzt löschen",
   "settingsScreenGeneralSectionTitle": "General",
   "settingsScreenGeneralSectionQualityLabel": "Qualität",
+  "settingsScreenGeneralSectionRecordButtonBehaviorLabel": "Aufnahme-Methode",
   "settingsScreenGeneralSectionAskForMemoryAnnotationsLabel": "Nach Anmerkungen für Erinnerungen fragen",
   "settingsScreenGeneralSectionStartRecordingOnStartupLabel": "Aufnahme automatisch beim Öffnen der App starten",
   "settingsScreenResetHelpSheetsLabel": "Hilf-Sheets zurücksetzen",
@@ -117,6 +86,8 @@
 
   "calendarScreenTitle": "Kalendar",
   "calendarScreenSelectionTitle": "{count,plural, =1{Eine Erinnerung} other{{count} Erinnerungen}} ausgewählt",
+  "calendarScreenMemoriesDataMemoriesAmount": "Du hast {count,plural, =0{noch keine Erinnerungen}} =1{eine Erinnerung} other{{count} Erinnerungen}} erstellt",
+  "calendarScreenMemoriesDataMemoriesSpanning": "Welche vom {startDate} bis zum {endDate} reichen",
 
 
   "timelineScreenTitle": "Timeline",
@@ -137,5 +108,8 @@
   "enumMapping_ResolutionPreset_high": "Hoch",
   "enumMapping_ResolutionPreset_veryHigh": "Sehr Hoch",
   "enumMapping_ResolutionPreset_ultraHigh": "Ultra Hoch",
-  "enumMapping_ResolutionPreset_max": "Max"
+  "enumMapping_ResolutionPreset_max": "Max",
+
+  "enumMapping_RecordButtonBehavior_holdRecording": "Halten, um aufzunehmen, loslassen, um zu stoppen",
+  "enumMapping_RecordButtonBehavior_switchRecording": "Halten, um aufzunehmen, tippen, um zu stoppen"
 }
