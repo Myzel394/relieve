@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:gallery_saver/gallery_saver.dart';
 import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -297,6 +296,10 @@ class _MainScreenState extends State<MainScreen> with Loadable {
           annotation: annotation,
         );
 
+        if (settings.saveToGallery) {
+          await memory.saveFileToGallery();
+        }
+
         await memories.addMemory(memory);
       } catch (error) {
         if (!mounted) {
@@ -306,10 +309,6 @@ class _MainScreenState extends State<MainScreen> with Loadable {
         context.showErrorSnackBar(message: error.toString());
 
         return;
-      }
-
-      if (settings.saveToGallery) {
-        await GallerySaver.saveImage(file.path);
       }
 
       if (!mounted) {
@@ -364,6 +363,10 @@ class _MainScreenState extends State<MainScreen> with Loadable {
           annotation: annotation,
         );
 
+        if (settings.saveToGallery) {
+          await memory.saveFileToGallery();
+        }
+
         await memories.addMemory(memory);
       } catch (error) {
         if (!mounted) {
@@ -373,10 +376,6 @@ class _MainScreenState extends State<MainScreen> with Loadable {
         context.showErrorSnackBar(message: error.toString());
 
         return;
-      }
-
-      if (settings.saveToGallery) {
-        await GallerySaver.saveVideo(file.path);
       }
 
       if (!mounted) {

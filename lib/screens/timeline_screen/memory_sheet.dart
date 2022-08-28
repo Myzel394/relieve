@@ -140,7 +140,9 @@ class _MemorySheetState extends State<MemorySheet> with Loadable {
                     : () => callWithLoading(downloadFile, 'download'),
                 trailing: getIsLoadingSpecificID('download')
                     ? buildLoadingIndicator()
-                    : null,
+                    : (widget.memory.hasBeenSavedToGallery
+                        ? Icon(context.platformIcons.checkMarkCircledSolid)
+                        : null),
               ),
               ListTile(
                 leading: Icon(

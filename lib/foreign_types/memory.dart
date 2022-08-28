@@ -16,14 +16,18 @@ class Memory {
   final File file;
   final String annotation;
   final MemoryLocation? location;
+  bool _hasBeenSavedToGallery;
 
-  const Memory({
+  Memory({
     required this.id,
     required this.creationDate,
     required this.file,
     required this.annotation,
+    bool hasBeenSavedToGallery = false,
     this.location,
-  });
+  }) : _hasBeenSavedToGallery = hasBeenSavedToGallery;
+
+  bool get hasBeenSavedToGallery => _hasBeenSavedToGallery;
 
   static parse(final Map<String, dynamic> jsonData) => Memory(
         id: jsonData['id'],
@@ -31,6 +35,7 @@ class Memory {
         file: File(jsonData['file_path']),
         annotation: jsonData['annotation'],
         location: MemoryLocation.parse(jsonData['location']),
+        hasBeenSavedToGallery: jsonData['has_been_saved_to_gallery'] == 'true',
       );
 
   static Future<Memory> createFromFile({
@@ -62,6 +67,8 @@ class Memory {
       filename.split('.').last == 'jpg' ? MemoryType.photo : MemoryType.video;
 
   Future<void> saveFileToGallery() async {
+    _hasBeenSavedToGallery = true;
+
     switch (type) {
       case MemoryType.photo:
         await GallerySaver.saveImage(file.path);
@@ -78,5 +85,6 @@ class Memory {
         'file_path': file.path,
         'annotation': annotation,
         'location': location?.toJSON(),
+        'has_been_saved_to_gallery': _hasBeenSavedToGallery ? 'true' : 'false',
       };
 }

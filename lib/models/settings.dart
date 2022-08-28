@@ -37,7 +37,7 @@ class Settings extends ChangeNotifier {
   bool get recordOnStartup => _recordOnStartup;
   bool get saveToGallery => _saveToGallery;
 
-  Map<String, dynamic> toJSONData() => {
+  Map<String, dynamic> toJSON() => {
         'resolution': _resolution.toString(),
         'recordButtonBehavior': _recordButtonBehavior.toString(),
         'askForMemoryAnnotations': _askForMemoryAnnotations ? 'true' : 'false',
@@ -45,7 +45,7 @@ class Settings extends ChangeNotifier {
       };
 
   Future<void> save() async {
-    final data = toJSONData();
+    final data = toJSON();
 
     await secure.write(
       key: SETTINGS_KEY,
