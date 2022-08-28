@@ -1,10 +1,19 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:quid_faciam_hodie/constants/spacing.dart';
+import 'package:quid_faciam_hodie/enum_mapping/record_button_behavior/texts.dart';
+import 'package:quid_faciam_hodie/enum_mapping/resolution_preset/texts.dart';
+import 'package:quid_faciam_hodie/enums/record_button_behavior.dart';
+import 'package:quid_faciam_hodie/extensions/snackbar.dart';
 import 'package:quid_faciam_hodie/managers/global_values_manager.dart';
-import 'package:quid_faciam_hodie/screens/welcome_screen.dart';
-import 'package:quid_faciam_hodie/utils/loadable.dart';
+import 'package:quid_faciam_hodie/managers/user_help_sheets_manager.dart';
+import 'package:settings_ui/settings_ui.dart';
+
+import 'settings_screen/dropdown_tile.dart';
 
 const storage = FlutterSecureStorage();
 
@@ -17,7 +26,7 @@ class SettingsScreen extends StatefulWidget {
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
-class _SettingsScreenState extends State<SettingsScreen> with Loadable {
+class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void initState() {
     super.initState();
@@ -30,181 +39,84 @@ class _SettingsScreenState extends State<SettingsScreen> with Loadable {
     });
   }
 
-  Future<void> deleteUser() async {
-    return;
-
-    final localizations = AppLocalizations.of(context)!;
-
-    if (!mounted) {
-      return;
-    }
-
-    Navigator.pop(context);
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      WelcomeScreen.ID,
-      (route) => false,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final settings = GlobalValuesManager.settings!;
     final localizations = AppLocalizations.of(context)!;
 
-    return SizedBox();
-
-    /*
     return PlatformScaffold(
       appBar: PlatformAppBar(
         title: Text(localizations.settingsScreenTitle),
       ),
-      body: (user == null || isLoading)
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  PlatformCircularProgressIndicator(),
-                  const SizedBox(height: MEDIUM_SPACE),
-                  Text(localizations.generalLoadingLabel),
-                ],
+      body: Padding(
+        padding: EdgeInsets.only(top: isCupertino(context) ? LARGE_SPACE : 0),
+        child: SettingsList(
+          sections: [
+            SettingsSection(
+              title: Text(
+                localizations.settingsScreenGeneralSectionTitle,
               ),
-            )
-          : Padding(
-              padding:
-                  EdgeInsets.only(top: isCupertino(context) ? LARGE_SPACE : 0),
-              child: SettingsList(
-                sections: [
-                  SettingsSection(
-                    title:
-                        Text(localizations.settingsScreenAccountSectionTitle),
-                    tiles: <SettingsTile>[
-                      SettingsTile(
-                        leading: Icon(context.platformIcons.mail),
-                        title: Text(user!.email!),
-                      ),
-                      SettingsTile(
-                        leading: Icon(context.platformIcons.time),
-                        title: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              DateFormat('d. MMMM y,  HH:mm:ss')
-                                  .format(DateTime.parse(user!.createdAt)),
-                            ),
-                            const SizedBox(height: SMALL_SPACE),
-                            Text(
-                              localizations
-                                  .settingsScreenAccountSectionCreationDateLabel,
-                              style: getCaptionTextStyle(context),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
+              tiles: [
+                SettingsDropdownTile<ResolutionPreset>(
+                  leading: const Icon(Icons.high_quality),
+                  title: Text(
+                    localizations.settingsScreenGeneralSectionQualityLabel,
                   ),
-                  SettingsSection(
-                    title: Text(
-                      localizations.settingsScreenGeneralSectionTitle,
-                    ),
-                    tiles: [
-                      SettingsDropdownTile<ResolutionPreset>(
-                        leading: const Icon(Icons.high_quality),
-                        title: Text(
-                          localizations
-                              .settingsScreenGeneralSectionQualityLabel,
-                        ),
-                        onUpdate: settings.setResolution,
-                        textMapping: getResolutionTextMapping(context),
-                        value: settings.resolution,
-                        values: ResolutionPreset.values,
-                      ),
-                      SettingsDropdownTile<RecordButtonBehavior>(
-                        leading: const Icon(Icons.fiber_manual_record),
-                        title: Text(
-                          localizations
-                              .settingsScreenGeneralSectionRecordButtonBehaviorLabel,
-                        ),
-                        onUpdate: settings.setRecordButtonBehavior,
-                        textMapping:
-                            getRecordButtonBehaviorTextMapping(context),
-                        value: settings.recordButtonBehavior,
-                        values: RecordButtonBehavior.values,
-                      ),
-                      SettingsTile.switchTile(
-                        initialValue: settings.askForMemoryAnnotations,
-                        onToggle: settings.setAskForMemoryAnnotations,
-                        title: Text(
-                          localizations
-                              .settingsScreenGeneralSectionAskForMemoryAnnotationsLabel,
-                        ),
-                      ),
-                      SettingsTile.switchTile(
-                        initialValue: settings.recordOnStartup,
-                        onToggle: settings.setRecordOnStartup,
-                        title: Text(
-                          localizations
-                              .settingsScreenGeneralSectionStartRecordingOnStartupLabel,
-                        ),
-                      ),
-                      SettingsTile(
-                        leading: Icon(context.platformIcons.help),
-                        title: Text(
-                          localizations.settingsScreenResetHelpSheetsLabel,
-                        ),
-                        onPressed: (_) async {
-                          await UserHelpSheetsManager.deleteAll();
+                  onUpdate: settings.setResolution,
+                  textMapping: getResolutionTextMapping(context),
+                  value: settings.resolution,
+                  values: ResolutionPreset.values,
+                ),
+                SettingsDropdownTile<RecordButtonBehavior>(
+                  leading: const Icon(Icons.fiber_manual_record),
+                  title: Text(
+                    localizations
+                        .settingsScreenGeneralSectionRecordButtonBehaviorLabel,
+                  ),
+                  onUpdate: settings.setRecordButtonBehavior,
+                  textMapping: getRecordButtonBehaviorTextMapping(context),
+                  value: settings.recordButtonBehavior,
+                  values: RecordButtonBehavior.values,
+                ),
+                SettingsTile.switchTile(
+                  initialValue: settings.askForMemoryAnnotations,
+                  onToggle: settings.setAskForMemoryAnnotations,
+                  title: Text(
+                    localizations
+                        .settingsScreenGeneralSectionAskForMemoryAnnotationsLabel,
+                  ),
+                ),
+                SettingsTile.switchTile(
+                  initialValue: settings.recordOnStartup,
+                  onToggle: settings.setRecordOnStartup,
+                  title: Text(
+                    localizations
+                        .settingsScreenGeneralSectionStartRecordingOnStartupLabel,
+                  ),
+                ),
+                SettingsTile(
+                  leading: Icon(context.platformIcons.help),
+                  title: Text(
+                    localizations.settingsScreenResetHelpSheetsLabel,
+                  ),
+                  onPressed: (_) async {
+                    await UserHelpSheetsManager.deleteAll();
 
-                          context.showSuccessSnackBar(
-                            message: localizations
-                                .settingsScreenResetHelpSheetsResetSuccessfully,
-                          );
-                        },
-                      )
-                    ],
-                  ),
-                  SettingsSection(
-                    title: Text(localizations.settingsScreenDangerSectionTitle),
-                    tiles: <SettingsTile>[
-                      SettingsTile(
-                        leading: Icon(context.platformIcons.delete),
-                        title: Text(localizations
-                            .settingsScreenDangerSectionDeleteAccountLabel),
-                        onPressed: (_) => showPlatformDialog(
-                          context: context,
-                          builder: (platformContext) => PlatformAlertDialog(
-                            title: Text(
-                              localizations
-                                  .settingsScreenDangerSectionDeleteAccountLabel,
-                            ),
-                            content: Text(
-                              localizations
-                                  .settingsScreenDeleteAccountDescription,
-                              style: getBodyTextTextStyle(platformContext),
-                            ),
-                            actions: [
-                              PlatformDialogAction(
-                                child: Text(
-                                  localizations.generalCancelButtonLabel,
-                                ),
-                                onPressed: () => Navigator.pop(context),
-                              ),
-                              PlatformDialogAction(
-                                child: Text(
-                                  localizations
-                                      .settingsScreenDeleteAccountConfirmLabel,
-                                ),
-                                onPressed: () => callWithLoading(deleteUser),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                    if (!mounted) {
+                      return;
+                    }
+
+                    context.showSuccessSnackBar(
+                      message: localizations
+                          .settingsScreenResetHelpSheetsResetSuccessfully,
+                    );
+                  },
+                )
+              ],
             ),
-    );*/
+          ],
+        ),
+      ),
+    );
   }
 }
