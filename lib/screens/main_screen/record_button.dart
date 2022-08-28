@@ -47,6 +47,10 @@ class _RecordButtonState extends State<RecordButton> {
 
     // Update UI when settings change
     settings.addListener(() {
+      if (!mounted) {
+        return;
+      }
+
       setState(() {});
     });
   }

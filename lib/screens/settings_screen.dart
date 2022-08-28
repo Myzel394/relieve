@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:quid_faciam_hodie/constants/spacing.dart';
 import 'package:quid_faciam_hodie/enum_mapping/record_button_behavior/texts.dart';
 import 'package:quid_faciam_hodie/enum_mapping/resolution_preset/texts.dart';
@@ -27,6 +28,8 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  bool? hasGrantedMediaAccess;
+
   @override
   void initState() {
     super.initState();
@@ -37,6 +40,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
     settings.addListener(() {
       setState(() {});
     });
+
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        if (!mounted) {
+          return;
+        }
+        checkMediaPermissionStatus();
+      },
+    );
+  }
+
+  Future<void> checkMediaPermissionStatus() async {
+    if (isMaterial(context)) {
+      setState(() {
+        hasGrantedMediaAccess = true;
+      });
+    } else {
+      final hasGranted = await Permission.photosAddOnly.isGranted;
+
+      setState(() {
+        hasGrantedMediaAccess = hasGranted;
+      });
+    }
   }
 
   @override
@@ -77,6 +103,34 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   textMapping: getRecordButtonBehaviorTextMapping(context),
                   value: settings.recordButtonBehavior,
                   values: RecordButtonBehavior.values,
+                ),
+                SettingsTile.switchTile(
+                  initialValue: settings.saveToGallery,
+                  onToggle: (newValue) async {
+                    if (hasGrantedMediaAccess == false) {
+                      final status = await Permission.photosAddOnly.request();
+
+                      if (status.isGranted) {
+                        setState(() {
+                          hasGrantedMediaAccess = true;
+                        });
+                      }
+                    }
+
+                    if (hasGrantedMediaAccess == true) {
+                      settings.setSaveToGallery(newValue);
+                    }
+                  },
+                  title: Text(
+                    localizations.settingsScreenSaveToGalleryLabel,
+                  ),
+                  enabled: hasGrantedMediaAccess != null,
+                  description: hasGrantedMediaAccess == null
+                      ? Text(
+                          localizations.generalLoadingLabel,
+                        )
+                      : null,
+                  leading: Icon(context.platformIcons.collections),
                 ),
                 SettingsTile.switchTile(
                   initialValue: settings.askForMemoryAnnotations,

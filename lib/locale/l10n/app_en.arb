@@ -19,7 +19,7 @@
 
 
   "mainScreenActionsTorchButton": "Torch",
-  "mainScreenUploadSuccess": "Uploaded successfully!",
+  "mainScreenMemorySuccess": "Memory saved successfully!",
 
   "mainScreenTakePhotoActionTakingPhoto": "Taking photo, please hold still...",
   "mainScreenTakeVideoActionSaveVideo": "Taking video, please hold still...",
@@ -116,6 +116,7 @@
   "settingsScreenGeneralSectionStartRecordingOnStartupLabel": "Automatically start recording on startup",
   "settingsScreenResetHelpSheetsLabel": "Reset Help Sheets",
   "settingsScreenResetHelpSheetsResetSuccessfully": "Help Sheets reset successfully.",
+  "settingsScreenSaveToGalleryLabel": "Save Memories to Gallery",
 
 
   "calendarScreenTitle": "Calendar",

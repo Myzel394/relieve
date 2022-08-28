@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -259,6 +260,7 @@ class _MainScreenState extends State<MainScreen> with Loadable {
   }
 
   Future<void> takePhoto() async {
+    final settings = GlobalValuesManager.settings!;
     final memories = context.read<Memories>();
     final localizations = AppLocalizations.of(context)!;
 
@@ -306,12 +308,16 @@ class _MainScreenState extends State<MainScreen> with Loadable {
         return;
       }
 
+      if (settings.saveToGallery) {
+        await GallerySaver.saveImage(file.path);
+      }
+
       if (!mounted) {
         return;
       }
 
       context.showSuccessSnackBar(
-        message: localizations.mainScreenUploadSuccess,
+        message: localizations.mainScreenMemorySuccess,
       );
     } finally {
       _releaseCamera();
@@ -320,6 +326,7 @@ class _MainScreenState extends State<MainScreen> with Loadable {
   }
 
   Future<void> takeVideo() async {
+    final settings = GlobalValuesManager.settings!;
     final memories = context.read<Memories>();
     final localizations = AppLocalizations.of(context)!;
 
@@ -368,12 +375,16 @@ class _MainScreenState extends State<MainScreen> with Loadable {
         return;
       }
 
+      if (settings.saveToGallery) {
+        await GallerySaver.saveVideo(file.path);
+      }
+
       if (!mounted) {
         return;
       }
 
       context.showSuccessSnackBar(
-        message: localizations.mainScreenUploadSuccess,
+        message: localizations.mainScreenMemorySuccess,
       );
     } finally {
       _releaseCamera();

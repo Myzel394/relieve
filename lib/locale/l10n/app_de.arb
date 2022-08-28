@@ -19,7 +19,7 @@
 
 
   "mainScreenActionsTorchButton": "Taschenlampe",
-  "mainScreenUploadSuccess": "Erfolgreich hochgeladen",
+  "mainScreenMemorySuccess": "Erinnerung erfolgreich gespeichert!",
 
   "mainScreenTakePhotoActionTakingPhoto": "Foto wird aufgenommen, halte still...",
   "mainScreenTakeVideoActionSaveVideo": "Video wird aufgenommen, halte still...",
@@ -86,6 +86,7 @@
   "settingsScreenGeneralSectionStartRecordingOnStartupLabel": "Aufnahme automatisch beim Öffnen der App starten",
   "settingsScreenResetHelpSheetsLabel": "Hilf-Sheets zurücksetzen",
   "settingsScreenResetHelpSheetsResetSuccessfully": "Hilf-Sheets wurden zurückgesetzt.",
+  "settingsScreenSaveToGalleryLabel": "Erinnerungen in Gallerie speichern",
 
 
   "calendarScreenTitle": "Kalendar",
