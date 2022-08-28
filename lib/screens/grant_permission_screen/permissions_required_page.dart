@@ -23,6 +23,16 @@ class _PermissionsRequiredPageState extends State<PermissionsRequiredPage> {
   bool hasGrantedCameraPermission = false;
   bool hasGrantedMicrophonePermission = false;
   bool hasGrantedLocationPermission = false;
+  bool hasGrantedMediaPermission = false;
+
+  bool get hasGrantedRequiredPermissions =>
+      hasGrantedCameraPermission && hasGrantedMicrophonePermission;
+
+  bool get hasGrantedAllPermissions =>
+      hasGrantedRequiredPermissions &&
+      hasGrantedLocationPermission &&
+      (isMaterial(context) ||
+          (isCupertino(context) && hasGrantedMediaPermission));
 
   @override
   void initState() {
@@ -35,11 +45,13 @@ class _PermissionsRequiredPageState extends State<PermissionsRequiredPage> {
     final cameraStatus = await Permission.camera.status;
     final microphoneStatus = await Permission.microphone.status;
     final locationStatus = await Permission.location.status;
+    final mediaLocationStatus = await Permission.photosAddOnly.status;
 
     setState(() {
       hasGrantedCameraPermission = cameraStatus.isGranted;
       hasGrantedMicrophonePermission = microphoneStatus.isGranted;
       hasGrantedLocationPermission = locationStatus.isGranted;
+      hasGrantedMediaPermission = mediaLocationStatus.isGranted;
     });
 
     // These permissions are crucially required for the app to work
@@ -52,9 +64,7 @@ class _PermissionsRequiredPageState extends State<PermissionsRequiredPage> {
       return;
     }
 
-    if (cameraStatus.isGranted &&
-        microphoneStatus.isGranted &&
-        locationStatus.isGranted) {
+    if (hasGrantedAllPermissions) {
       widget.onPermissionsGranted();
     }
   }
@@ -96,6 +106,17 @@ class _PermissionsRequiredPageState extends State<PermissionsRequiredPage> {
             ),
           ),
         ] else ...[
+          Text(
+            localizations.permissionsRequiredPageRequiredPermissionsLabel,
+            style: platformThemeData(
+              context,
+              material: (data) => data.textTheme.caption!,
+              cupertino: (data) => data.textTheme.navTitleTextStyle,
+            ),
+          ),
+          const SizedBox(height: SMALL_SPACE),
+          const Divider(),
+          const SizedBox(height: SMALL_SPACE),
           PlatformTextButton(
             onPressed: hasGrantedCameraPermission
                 ? null
@@ -142,6 +163,17 @@ class _PermissionsRequiredPageState extends State<PermissionsRequiredPage> {
               ),
             ),
           ),
+          const SizedBox(height: LARGE_SPACE),
+          Text(
+            localizations.permissionsRequiredPageOptionalPermissionsLabel,
+            style: platformThemeData(
+              context,
+              material: (data) => data.textTheme.caption!,
+              cupertino: (data) => data.textTheme.navTitleTextStyle,
+            ),
+          ),
+          const SizedBox(height: SMALL_SPACE),
+          const Divider(),
           const SizedBox(height: SMALL_SPACE),
           PlatformTextButton(
             onPressed: hasGrantedLocationPermission
@@ -166,7 +198,41 @@ class _PermissionsRequiredPageState extends State<PermissionsRequiredPage> {
               ),
             ),
           ),
+          const SizedBox(height: SMALL_SPACE),
+          if (isCupertino(context))
+            PlatformTextButton(
+              onPressed: hasGrantedMediaPermission
+                  ? null
+                  : () async {
+                      await Permission.photosAddOnly.request();
+                      await checkPermissions();
+                    },
+              child: IconButtonChild(
+                icon: Icon(context.platformIcons.collections),
+                label: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      localizations.permissionsRequiredPageGrantMediaPermission,
+                    ),
+                    if (hasGrantedMediaPermission)
+                      Icon(context.platformIcons.checkMark),
+                    if (!hasGrantedMediaPermission) const SizedBox(),
+                  ],
+                ),
+              ),
+            ),
         ],
+        const SizedBox(height: LARGE_SPACE),
+        PlatformElevatedButton(
+          onPressed: hasGrantedRequiredPermissions
+              ? widget.onPermissionsGranted
+              : null,
+          child: IconButtonChild(
+            icon: Icon(context.platformIcons.forward),
+            label: Text(localizations.generalContinueButtonLabel),
+          ),
+        ),
       ],
     );
   }

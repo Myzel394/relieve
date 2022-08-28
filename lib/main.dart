@@ -16,6 +16,7 @@ import 'package:quid_faciam_hodie/screens/welcome_screen.dart';
 import 'managers/global_values_manager.dart';
 import 'models/memories.dart';
 import 'screens/empty_screen.dart';
+import 'utils/permissions.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,11 +29,14 @@ void main() async {
   GlobalValuesManager.initialize();
 
   final initialPage = await StartupPageManager.getPageWithFallback();
+  final hasGrantedPermissions = await hasGrantedRequiredPermissions();
   final memories = await Memories.restore();
 
   runApp(
     MyApp(
-      initialPage: initialPage,
+      initialPage: (initialPage != WelcomeScreen.ID && !hasGrantedPermissions)
+          ? GrantPermissionScreen.ID
+          : initialPage,
       memories: memories,
     ),
   );

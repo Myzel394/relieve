@@ -3,8 +3,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:quid_faciam_hodie/constants/spacing.dart';
 import 'package:quid_faciam_hodie/managers/startup_page_manager.dart';
+import 'package:quid_faciam_hodie/screens/grant_permission_screen.dart';
 import 'package:quid_faciam_hodie/screens/main_screen.dart';
 import 'package:quid_faciam_hodie/screens/welcome_screen/crabs/logo.dart';
+import 'package:quid_faciam_hodie/utils/permissions.dart';
 import 'package:quid_faciam_hodie/utils/theme.dart';
 import 'package:quid_faciam_hodie/widgets/icon_button_child.dart';
 
@@ -41,7 +43,14 @@ class GetStartedPage extends StatelessWidget {
               onPressed: () async {
                 await StartupPageManager.setPage(MainScreen.ID);
 
-                Navigator.pushReplacementNamed(context, MainScreen.ID);
+                if (await hasGrantedRequiredPermissions()) {
+                  Navigator.pushReplacementNamed(context, MainScreen.ID);
+                } else {
+                  Navigator.pushReplacementNamed(
+                    context,
+                    GrantPermissionScreen.ID,
+                  );
+                }
               },
             ),
           ],

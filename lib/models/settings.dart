@@ -16,15 +16,18 @@ class Settings extends ChangeNotifier {
       RecordButtonBehavior.holdRecording;
   bool _askForMemoryAnnotations = false;
   bool _recordOnStartup = false;
+  bool _saveToGallery = true;
 
   Settings({
     final ResolutionPreset? resolution,
     final RecordButtonBehavior? recordButtonBehavior,
     final bool? askForMemoryAnnotations,
     final bool? recordOnStartup,
+    final bool? saveToGallery,
   })  : _resolution = resolution ?? ResolutionPreset.max,
-        _askForMemoryAnnotations = askForMemoryAnnotations ?? true,
+        _askForMemoryAnnotations = askForMemoryAnnotations ?? false,
         _recordOnStartup = recordOnStartup ?? false,
+        _saveToGallery = saveToGallery ?? false,
         _recordButtonBehavior =
             recordButtonBehavior ?? RecordButtonBehavior.holdRecording;
 
@@ -32,6 +35,7 @@ class Settings extends ChangeNotifier {
   RecordButtonBehavior get recordButtonBehavior => _recordButtonBehavior;
   bool get askForMemoryAnnotations => _askForMemoryAnnotations;
   bool get recordOnStartup => _recordOnStartup;
+  bool get saveToGallery => _saveToGallery;
 
   Map<String, dynamic> toJSONData() => {
         'resolution': _resolution.toString(),
@@ -95,6 +99,12 @@ class Settings extends ChangeNotifier {
 
   void setRecordOnStartup(final bool recordOnStartup) {
     _recordOnStartup = recordOnStartup;
+    notifyListeners();
+    save();
+  }
+
+  void setSaveToGallery(final bool saveToGallery) {
+    _saveToGallery = saveToGallery;
     notifyListeners();
     save();
   }

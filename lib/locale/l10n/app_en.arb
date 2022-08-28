@@ -44,6 +44,10 @@
   "permissionsRequiredPageGrantCameraPermission": "Grant camera permission",
   "permissionsRequiredPageGrantMicrophonePermission": "Grant microphone permission",
   "permissionsRequiredPageGrantLocationPermission": "Grant location permission",
+  "permissionsRequiredPageGrantMediaPermission": "Grant media permission",
+
+  "permissionsRequiredPageRequiredPermissionsLabel": "Required",
+  "permissionsRequiredPageOptionalPermissionsLabel": "Optional",
 
 
   "memorySheetSavedToGallery": "Saved to Gallery!",
