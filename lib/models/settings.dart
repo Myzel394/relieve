@@ -42,6 +42,7 @@ class Settings extends ChangeNotifier {
         'recordButtonBehavior': _recordButtonBehavior.toString(),
         'askForMemoryAnnotations': _askForMemoryAnnotations ? 'true' : 'false',
         'recordOnStartup': _recordOnStartup ? 'true' : 'false',
+        'saveToGallery': _saveToGallery ? 'true' : 'false',
       };
 
   Future<void> save() async {

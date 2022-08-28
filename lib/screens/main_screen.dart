@@ -149,16 +149,20 @@ class _MainScreenState extends State<MainScreen> with Loadable {
   void onNewCameraSelected(final CameraDescription cameraDescription) async {
     final settings = context.read<Settings>();
 
-    if (controller != null) {
-      await controller?.dispose();
-    }
-
     // Instantiating the camera controller
     final CameraController cameraController = CameraController(
       cameraDescription,
       settings.resolution,
       imageFormatGroup: ImageFormatGroup.jpeg,
     );
+
+    if (controller != null) {
+      await controller?.dispose();
+
+      setState(() {
+        controller = null;
+      });
+    }
 
     try {
       await cameraController.initialize();
@@ -167,12 +171,13 @@ class _MainScreenState extends State<MainScreen> with Loadable {
       return;
     }
 
+    controller = cameraController;
+
     // Update UI if controller updates
     cameraController.addListener(() {
       if (mounted) setState(() {});
     });
 
-    controller = cameraController;
     await controller!.prepareForVideoRecording();
 
     if (settings.recordOnStartup && !hasRecordedOnStartup) {
