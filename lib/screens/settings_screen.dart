@@ -135,6 +135,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 SettingsTile.switchTile(
                   initialValue: settings.askForMemoryAnnotations,
                   onToggle: settings.setAskForMemoryAnnotations,
+                  leading: Icon(context.platformIcons.pen),
                   title: Text(
                     localizations
                         .settingsScreenGeneralSectionAskForMemoryAnnotationsLabel,
@@ -143,6 +144,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 SettingsTile.switchTile(
                   initialValue: settings.recordOnStartup,
                   onToggle: settings.setRecordOnStartup,
+                  leading: Icon(context.platformIcons.photoCamera),
                   title: Text(
                     localizations
                         .settingsScreenGeneralSectionStartRecordingOnStartupLabel,
