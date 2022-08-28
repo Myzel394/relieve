@@ -10,14 +10,12 @@ class MemoryView extends StatefulWidget {
   final Memory memory;
   final bool loopVideo;
   final void Function(VideoPlayerController)? onVideoControllerInitialized;
-  final VoidCallback? onFileDownloaded;
 
   const MemoryView({
     Key? key,
     required this.memory,
     this.loopVideo = false,
     this.onVideoControllerInitialized,
-    this.onFileDownloaded,
   }) : super(key: key);
 
   @override

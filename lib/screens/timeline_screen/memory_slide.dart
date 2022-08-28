@@ -33,8 +33,13 @@ class _MemorySlideState extends State<MemorySlide>
   void initState() {
     super.initState();
 
+    if (widget.memory.type == MemoryType.photo) {
+      initializeAnimation(DEFAULT_IMAGE_DURATION);
+    }
+
     final timeline = context.read<TimelineModel>();
 
+    // Pause / Resume `Status` widget when timeline pauses
     timeline.addListener(() {
       if (!mounted) {
         return;
@@ -58,11 +63,11 @@ class _MemorySlideState extends State<MemorySlide>
   void initializeAnimation(final Duration newDuration) {
     duration = newDuration;
 
-    controller = StatusController(
+    final newController = StatusController(
       duration: newDuration,
     );
 
-    controller!.addListener(() {
+    newController.addListener(() {
       if (!mounted) {
         return;
       }
@@ -74,43 +79,40 @@ class _MemorySlideState extends State<MemorySlide>
       }
     }, ['done']);
 
+    setState(() {
+      controller = newController;
+    });
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<TimelineModel>(
-      builder: (___, timeline, ____) => Status(
-        controller: controller,
-        isIndeterminate: controller == null,
-        paused: timeline.paused,
-        hideProgressBar: !timeline.showOverlay,
-        child: MemoryView(
-          memory: widget.memory,
-          loopVideo: false,
-          onFileDownloaded: () {
-            if (widget.memory.type == MemoryType.photo) {
-              initializeAnimation(DEFAULT_IMAGE_DURATION);
-            }
-          },
-          onVideoControllerInitialized: (controller) {
-            if (mounted) {
-              initializeAnimation(controller.value.duration);
+    final timeline = context.watch<TimelineModel>();
 
-              timeline.addListener(() {
-                if (!mounted) {
-                  return;
-                }
+    return Status(
+      controller: controller,
+      paused: timeline.paused,
+      hideProgressBar: !timeline.showOverlay,
+      child: MemoryView(
+        memory: widget.memory,
+        loopVideo: false,
+        onVideoControllerInitialized: (controller) {
+          if (mounted) {
+            initializeAnimation(controller.value.duration);
 
-                if (timeline.paused) {
-                  controller.pause();
-                } else {
-                  controller.play();
-                }
-              }, ['paused']);
-            }
-          },
-        ),
+            timeline.addListener(() {
+              if (!mounted) {
+                return;
+              }
+
+              if (timeline.paused) {
+                controller.pause();
+              } else {
+                controller.play();
+              }
+            }, ['paused']);
+          }
+        },
       ),
     );
   }

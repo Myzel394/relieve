@@ -43,15 +43,7 @@ class _StatusState extends State<Status> with TickerProviderStateMixin {
   void didUpdateWidget(covariant Status oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (widget.controller != null && animationController == null) {
-      initializeAnimation();
-    }
-
-    if (widget.paused) {
-      animationController?.stop();
-    } else {
-      animationController?.forward();
-    }
+    _initializeControllerIfRequired();
   }
 
   @override
@@ -81,6 +73,20 @@ class _StatusState extends State<Status> with TickerProviderStateMixin {
 
     if (widget.autoStart) {
       initializeAnimation();
+    } else {
+      _initializeControllerIfRequired();
+    }
+  }
+
+  void _initializeControllerIfRequired() {
+    if (widget.controller != null && animationController == null) {
+      initializeAnimation();
+    }
+
+    if (widget.paused) {
+      animationController?.stop();
+    } else {
+      animationController?.forward();
     }
   }
 
