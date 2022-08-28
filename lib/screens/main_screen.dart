@@ -15,14 +15,14 @@ import 'package:quid_faciam_hodie/constants/help_sheet_id.dart';
 import 'package:quid_faciam_hodie/constants/spacing.dart';
 import 'package:quid_faciam_hodie/constants/values.dart';
 import 'package:quid_faciam_hodie/extensions/snackbar.dart';
-import 'package:quid_faciam_hodie/managers/file_manager.dart';
+import 'package:quid_faciam_hodie/foreign_types/memory.dart';
+import 'package:quid_faciam_hodie/foreign_types/memory_location.dart';
 import 'package:quid_faciam_hodie/managers/global_values_manager.dart';
 import 'package:quid_faciam_hodie/models/memories.dart';
 import 'package:quid_faciam_hodie/screens/main_screen/annotation_dialog.dart';
 import 'package:quid_faciam_hodie/screens/main_screen/camera_help_content.dart';
 import 'package:quid_faciam_hodie/screens/main_screen/cancel_recording_button.dart';
 import 'package:quid_faciam_hodie/screens/main_screen/settings_button_overlay.dart';
-import 'package:quid_faciam_hodie/utils/auth_required.dart';
 import 'package:quid_faciam_hodie/utils/loadable.dart';
 import 'package:quid_faciam_hodie/utils/tag_location_to_image.dart';
 import 'package:quid_faciam_hodie/widgets/animate_in_builder.dart';
@@ -30,7 +30,6 @@ import 'package:quid_faciam_hodie/widgets/fade_and_move_in_animation.dart';
 import 'package:quid_faciam_hodie/widgets/help_sheet.dart';
 import 'package:quid_faciam_hodie/widgets/icon_button_child.dart';
 import 'package:quid_faciam_hodie/widgets/sheet_indicator.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'main_screen/change_camera_button.dart';
 import 'main_screen/record_button.dart';
@@ -47,7 +46,7 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends AuthRequiredState<MainScreen> with Loadable {
+class _MainScreenState extends State<MainScreen> with Loadable {
   int currentZoomLevelIndex = 0;
 
   bool hasRecordedOnStartup = false;
@@ -56,8 +55,6 @@ class _MainScreenState extends AuthRequiredState<MainScreen> with Loadable {
   bool isTorchEnabled = false;
   Uint8List? uploadingPhotoAnimation;
   List<double>? zoomLevels;
-
-  late User _user;
 
   CameraController? controller;
 
@@ -138,15 +135,6 @@ class _MainScreenState extends AuthRequiredState<MainScreen> with Loadable {
       cameraController.dispose();
     } else if (state == AppLifecycleState.resumed) {
       onNewCameraSelected(cameraController.description);
-    }
-  }
-
-  @override
-  void onAuthenticated(Session session) {
-    final user = session.user;
-
-    if (user != null) {
-      _user = user;
     }
   }
 
@@ -284,6 +272,7 @@ class _MainScreenState extends AuthRequiredState<MainScreen> with Loadable {
   }
 
   Future<void> takePhoto() async {
+    final memories = context.watch<Memories>();
     final localizations = AppLocalizations.of(context)!;
 
     if (controller!.value.isTakingPicture) {
@@ -301,25 +290,40 @@ class _MainScreenState extends AuthRequiredState<MainScreen> with Loadable {
 
       final file = File((await controller!.takePicture()).path);
 
-      final annotationGetterFuture = getAnnotation();
       final locationData = await getLocation(file);
+      final annotation = await getAnnotation();
 
       _showUploadingPhotoAnimation(file);
+
+      if (!mounted) {
+        return;
+      }
 
       context.showPendingSnackBar(
         message: localizations.mainScreenTakePhotoActionUploadingPhoto,
       );
 
       try {
-        await FileManager.uploadFile(
-          _user,
-          file,
-          locationData: locationData,
-          annotationGetterFuture: annotationGetterFuture,
+        final memory = await Memory.createFromFile(
+          file: file,
+          location: locationData == null
+              ? null
+              : MemoryLocation.fromLocationData(locationData),
+          annotation: annotation,
         );
+
+        await memories.addMemory(memory);
       } catch (error) {
+        if (!mounted) {
+          return;
+        }
+
         context.showErrorSnackBar(message: error.toString());
 
+        return;
+      }
+
+      if (!mounted) {
         return;
       }
 
@@ -333,6 +337,7 @@ class _MainScreenState extends AuthRequiredState<MainScreen> with Loadable {
   }
 
   Future<void> takeVideo() async {
+    final memories = context.watch<Memories>();
     final localizations = AppLocalizations.of(context)!;
 
     if (!controller!.value.isRecordingVideo) {
@@ -353,23 +358,38 @@ class _MainScreenState extends AuthRequiredState<MainScreen> with Loadable {
 
       final file = File((await controller!.stopVideoRecording()).path);
 
-      final annotationGetterFuture = getAnnotation();
+      final annotation = await getAnnotation();
       final locationData = await getLocation();
+
+      if (!mounted) {
+        return;
+      }
 
       context.showPendingSnackBar(
         message: localizations.mainScreenTakeVideoActionUploadingVideo,
       );
 
       try {
-        await FileManager.uploadFile(
-          _user,
-          file,
-          annotationGetterFuture: annotationGetterFuture,
-          locationData: locationData,
+        final memory = await Memory.createFromFile(
+          file: file,
+          location: locationData == null
+              ? null
+              : MemoryLocation.fromLocationData(locationData),
+          annotation: annotation,
         );
+
+        await memories.addMemory(memory);
       } catch (error) {
+        if (!mounted) {
+          return;
+        }
+
         context.showErrorSnackBar(message: error.toString());
 
+        return;
+      }
+
+      if (!mounted) {
         return;
       }
 

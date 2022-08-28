@@ -1,51 +1,56 @@
-import 'package:property_change_notifier/property_change_notifier.dart';
-import 'package:quid_faciam_hodie/foreign_types/memory.dart';
-import 'package:quid_faciam_hodie/managers/global_values_manager.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'dart:convert';
 
-final supabase = Supabase.instance.client;
+import 'package:collection/collection.dart';
+import 'package:property_change_notifier/property_change_notifier.dart';
+import 'package:quid_faciam_hodie/constants/storage_keys.dart';
+import 'package:quid_faciam_hodie/foreign_types/memory.dart';
+import 'package:quid_faciam_hodie/screens/welcome_screen.dart';
 
 class Memories extends PropertyChangeNotifier<String> {
-  final List<Memory> _memories = [];
+  late final List<Memory> _memories;
 
-  Memories();
+  Memories({
+    final List<Memory>? memories,
+  }) : _memories = memories ?? [];
 
-  RealtimeSubscription? _serverSubscription;
-  bool _isInitialized = false;
+  static Future<Memories> restore() async {
+    final rawData = await storage.read(key: MEMORIES_KEY);
+
+    if (rawData == null) {
+      return Memories();
+    }
+
+    final data = jsonDecode(rawData);
+    final memories =
+        data.map<Memory>((memory) => Memory.parse(memory)).toList();
+
+    return Memories(
+      memories: memories,
+    )..sortMemories();
+  }
 
   List<Memory> get memories => _memories;
-  bool get isInitialized => _isInitialized;
 
-  @override
-  void dispose() {
-    _serverSubscription?.unsubscribe();
-
-    super.dispose();
-  }
-
-  void addMemory(final Memory memory) {
+  Future<void> addMemory(final Memory memory) async {
     _memories.add(memory);
     notifyListeners('memories');
+    await save();
   }
 
-  void addAllMemories(final List<Memory> memories) {
-    _memories.addAll(memories);
-    notifyListeners('memories');
-  }
-
-  void removeMemory(final Memory memory) {
+  Future<void> removeMemory(final Memory memory) async {
     _memories.remove(memory);
     notifyListeners('memories');
+    await save();
   }
 
-  void removeMemoryByID(final String id) {
-    _memories.removeWhere((memory) => memory.id == id);
-    notifyListeners('memories');
-  }
+  Future<void> removeMemoryByID(final String id) async {
+    final memory = _memories.firstWhereOrNull((memory) => memory.id == id);
 
-  void setIsInitialized(final bool value) {
-    _isInitialized = value;
-    notifyListeners('isInitialized');
+    if (memory == null) {
+      return;
+    }
+
+    await removeMemory(memory);
   }
 
   void sortMemories() {
@@ -53,73 +58,13 @@ class Memories extends PropertyChangeNotifier<String> {
     notifyListeners('memories');
   }
 
-  Future<void> initialize() async {
-    setIsInitialized(false);
+  Future<void> save() async {
+    final data = toJSON();
 
-    await _loadInitialData();
-
-    setIsInitialized(true);
-    notifyListeners();
-
-    // Watch new updates
-    _serverSubscription = supabase
-        .from('memories')
-        .on(SupabaseEventTypes.all, _onServerUpdate)
-        .subscribe();
+    await storage.write(key: MEMORIES_KEY, value: data.toString());
   }
 
-  Future<void> refresh() async {
-    memories.clear();
-    _serverSubscription?.unsubscribe();
-
-    setIsInitialized(false);
-  }
-
-  Future<void> _onServerUpdate(
-    final SupabaseRealtimePayload response,
-  ) async {
-    if (response == null) {
-      return;
-    }
-
-    switch (response.eventType) {
-      case 'INSERT':
-        final memory = Memory.parse(response.newRecord!);
-
-        addMemory(memory);
-
-        break;
-      case 'DELETE':
-        final id = response.oldRecord!['id'];
-
-        removeMemoryByID(id);
-        break;
-      // Used for easier debugging
-      case 'UPDATE':
-        final memory = Memory.parse(response.newRecord!);
-        final id = response.oldRecord!['id'];
-
-        _memories.removeWhere((memory) => memory.id == id);
-        memories.add(memory);
-
-        break;
-    }
-
-    sortMemories();
-  }
-
-  Future<void> _loadInitialData() async {
-    await GlobalValuesManager.waitForInitialization();
-
-    final response = await supabase
-        .from('memories')
-        .select()
-        .order('created_at', ascending: false)
-        .execute();
-    final newMemories = List<Memory>.from(
-      List<Map<String, dynamic>>.from(response.data).map(Memory.parse),
-    );
-
-    addAllMemories(newMemories);
-  }
+  Map<String, dynamic> toJSON() => {
+        'memories': _memories.map((memory) => memory.toJSON()).toList(),
+      };
 }

@@ -11,7 +11,7 @@ import 'welcome_screen/pages/initial_page.dart';
 const storage = FlutterSecureStorage();
 
 class WelcomeScreen extends StatefulWidget {
-  static const ID = '/welcome';
+  static const ID = '/';
 
   const WelcomeScreen({Key? key}) : super(key: key);
 

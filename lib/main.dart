@@ -8,7 +8,6 @@ import 'package:quid_faciam_hodie/constants/themes.dart';
 import 'package:quid_faciam_hodie/managers/startup_page_manager.dart';
 import 'package:quid_faciam_hodie/screens/calendar_screen.dart';
 import 'package:quid_faciam_hodie/screens/grant_permission_screen.dart';
-import 'package:quid_faciam_hodie/screens/login_screen.dart';
 import 'package:quid_faciam_hodie/screens/main_screen.dart';
 import 'package:quid_faciam_hodie/screens/settings_screen.dart';
 import 'package:quid_faciam_hodie/screens/timeline_screen.dart';
@@ -60,7 +59,6 @@ class MyApp extends StatelessWidget {
         routes: {
           WelcomeScreen.ID: (context) => const WelcomeScreen(),
           MainScreen.ID: (context) => const MainScreen(),
-          LoginScreen.ID: (context) => const LoginScreen(),
           TimelineScreen.ID: (context) => const TimelineScreen(),
           GrantPermissionScreen.ID: (context) => const GrantPermissionScreen(),
           CalendarScreen.ID: (context) => const CalendarScreen(),

@@ -4,9 +4,6 @@ import 'dart:math';
 import 'package:property_change_notifier/property_change_notifier.dart';
 import 'package:quid_faciam_hodie/extensions/date.dart';
 import 'package:quid_faciam_hodie/foreign_types/memory.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-
-final supabase = Supabase.instance.client;
 
 class TimelineModel extends PropertyChangeNotifier<String> {
   final Map<DateTime, List<Memory>> _timeline;
@@ -16,8 +13,6 @@ class TimelineModel extends PropertyChangeNotifier<String> {
     final int initialndex = 0,
   })  : _timeline = mapFromMemoriesList(memories),
         _currentIndex = initialndex;
-
-  RealtimeSubscription? _serverSubscription;
 
   int _currentIndex = 0;
   int _memoryIndex = 0;
@@ -63,12 +58,6 @@ class TimelineModel extends PropertyChangeNotifier<String> {
     }
 
     return map;
-  }
-
-  @override
-  void dispose() {
-    _serverSubscription?.unsubscribe(timeout: Duration.zero);
-    super.dispose();
   }
 
   void setCurrentIndex(final int index) {

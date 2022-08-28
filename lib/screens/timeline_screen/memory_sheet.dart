@@ -6,7 +6,6 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:quid_faciam_hodie/constants/spacing.dart';
 import 'package:quid_faciam_hodie/extensions/snackbar.dart';
 import 'package:quid_faciam_hodie/foreign_types/memory.dart';
-import 'package:quid_faciam_hodie/managers/file_manager.dart';
 import 'package:quid_faciam_hodie/screens/memory_map_screen.dart';
 import 'package:quid_faciam_hodie/utils/loadable.dart';
 import 'package:quid_faciam_hodie/utils/theme.dart';
@@ -14,7 +13,6 @@ import 'package:quid_faciam_hodie/widgets/icon_button_child.dart';
 import 'package:quid_faciam_hodie/widgets/platform_widgets/memory_cupertino_maps.dart';
 import 'package:quid_faciam_hodie/widgets/platform_widgets/memory_material_maps.dart';
 import 'package:quid_faciam_hodie/widgets/sheet_indicator.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MemorySheet extends StatefulWidget {
   final Memory memory;
@@ -30,13 +28,11 @@ class MemorySheet extends StatefulWidget {
   State<MemorySheet> createState() => _MemorySheetState();
 }
 
-final supabase = Supabase.instance.client;
-
 class _MemorySheetState extends State<MemorySheet> with Loadable {
   bool isExpanded = false;
 
   Future<void> deleteFile() async {
-    await FileManager.deleteFile(widget.memory.filePath);
+    throw Exception('Not implemented');
 
     if (mounted) {
       Navigator.pop(context);
@@ -58,38 +54,6 @@ class _MemorySheetState extends State<MemorySheet> with Loadable {
       context.showSuccessSnackBar(
         message: localizations.memorySheetSavedToGallery,
       );
-    } catch (error) {
-      context.showErrorSnackBar(message: localizations.generalError);
-    }
-  }
-
-  Future<void> changeVisibility() async {
-    final localizations = AppLocalizations.of(context)!;
-
-    final isNowPublic = !widget.memory.isPublic == true;
-
-    try {
-      await supabase.from('memories').update({
-        'is_public': !widget.memory.isPublic,
-      }).match({
-        'id': widget.memory.id,
-      }).execute();
-
-      if (!mounted) {
-        return;
-      }
-
-      Navigator.pop(context);
-
-      if (isNowPublic) {
-        context.showSuccessSnackBar(
-          message: localizations.memorySheetMemoryUpdatedToPublic,
-        );
-      } else {
-        context.showSuccessSnackBar(
-          message: localizations.memorySheetMemoryUpdatedToPrivate,
-        );
-      }
     } catch (error) {
       context.showErrorSnackBar(message: localizations.generalError);
     }
@@ -175,27 +139,6 @@ class _MemorySheetState extends State<MemorySheet> with Loadable {
                     ? null
                     : () => callWithLoading(downloadFile, 'download'),
                 trailing: getIsLoadingSpecificID('download')
-                    ? buildLoadingIndicator()
-                    : null,
-              ),
-              ListTile(
-                leading: Icon(
-                  widget.memory.isPublic
-                      ? Icons.public_off_rounded
-                      : Icons.public,
-                  color: getBodyTextColor(context),
-                ),
-                title: Text(
-                  widget.memory.isPublic
-                      ? localizations.memorySheetUpdateMemoryMakePrivate
-                      : localizations.memorySheetUpdateMemoryMakePublic,
-                  style: getBodyTextTextStyle(context),
-                ),
-                enabled: !getIsLoadingSpecificID('public'),
-                onTap: getIsLoadingSpecificID('public')
-                    ? null
-                    : () => callWithLoading(changeVisibility, 'public'),
-                trailing: getIsLoadingSpecificID('public')
                     ? buildLoadingIndicator()
                     : null,
               ),

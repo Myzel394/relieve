@@ -9,13 +9,10 @@ import 'package:quid_faciam_hodie/models/timeline.dart';
 import 'package:quid_faciam_hodie/screens/timeline_screen/timeline_help_content.dart';
 import 'package:quid_faciam_hodie/utils/loadable.dart';
 import 'package:quid_faciam_hodie/widgets/help_sheet.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'calendar_screen.dart';
 import 'empty_screen.dart';
 import 'timeline_screen/timeline_page.dart';
-
-final supabase = Supabase.instance.client;
 
 class TimelineScreen extends StatefulWidget {
   static const ID = '/timeline';

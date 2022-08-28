@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quid_faciam_hodie/constants/spacing.dart';
 import 'package:quid_faciam_hodie/models/timeline.dart';
-import 'package:quid_faciam_hodie/utils/theme.dart';
 
 class TimelineOverlay extends StatelessWidget {
   final DateTime date;
@@ -81,34 +80,18 @@ class TimelineOverlay extends StatelessWidget {
                         ),
                       ),
                     ),
-                  Row(
-                    children: <Widget>[
-                      AnimatedOpacity(
-                        opacity: timeline.currentMemory.isPublic ? 1.0 : 0.0,
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.linearToEaseOut,
-                        child: Icon(
-                          Icons.public,
-                          size: getIconSizeForBodyText(context),
-                          color: Colors.white,
-                        ),
+                  Text(
+                    '$memoryIndex/$memoriesAmount',
+                    style: platformThemeData(
+                      context,
+                      material: (data) => data.textTheme.titleSmall!.copyWith(
+                        color: Colors.white,
                       ),
-                      const SizedBox(width: SMALL_SPACE),
-                      Text(
-                        '$memoryIndex/$memoriesAmount',
-                        style: platformThemeData(
-                          context,
-                          material: (data) =>
-                              data.textTheme.titleSmall!.copyWith(
-                            color: Colors.white,
-                          ),
-                          cupertino: (data) =>
-                              data.textTheme.navTitleTextStyle.copyWith(
-                            color: Colors.white,
-                          ),
-                        ),
+                      cupertino: (data) =>
+                          data.textTheme.navTitleTextStyle.copyWith(
+                        color: Colors.white,
                       ),
-                    ],
+                    ),
                   ),
                 ],
               ),

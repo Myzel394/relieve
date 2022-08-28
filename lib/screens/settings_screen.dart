@@ -1,28 +1,10 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cache/flutter_cache.dart' as cache;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:intl/intl.dart';
-import 'package:quid_faciam_hodie/constants/spacing.dart';
-import 'package:quid_faciam_hodie/enum_mapping/record_button_behavior/texts.dart';
-import 'package:quid_faciam_hodie/enum_mapping/resolution_preset/texts.dart';
-import 'package:quid_faciam_hodie/enums/record_button_behavior.dart';
-import 'package:quid_faciam_hodie/extensions/snackbar.dart';
 import 'package:quid_faciam_hodie/managers/global_values_manager.dart';
-import 'package:quid_faciam_hodie/managers/user_help_sheets_manager.dart';
 import 'package:quid_faciam_hodie/screens/welcome_screen.dart';
-import 'package:quid_faciam_hodie/utils/auth_required.dart';
 import 'package:quid_faciam_hodie/utils/loadable.dart';
-import 'package:quid_faciam_hodie/utils/theme.dart';
-import 'package:settings_ui/settings_ui.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-
-import 'settings_screen/dropdown_tile.dart';
-
-final supabase = Supabase.instance.client;
 
 const storage = FlutterSecureStorage();
 
@@ -35,10 +17,7 @@ class SettingsScreen extends StatefulWidget {
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
-class _SettingsScreenState extends AuthRequiredState<SettingsScreen>
-    with Loadable {
-  User? user;
-
+class _SettingsScreenState extends State<SettingsScreen> with Loadable {
   @override
   void initState() {
     super.initState();
@@ -51,29 +30,10 @@ class _SettingsScreenState extends AuthRequiredState<SettingsScreen>
     });
   }
 
-  @override
-  void onAuthenticated(Session session) {
-    if (session.user != null) {
-      setState(() {
-        user = session.user;
-      });
-    }
-  }
-
   Future<void> deleteUser() async {
     return;
 
     final localizations = AppLocalizations.of(context)!;
-
-    final response = await supabase
-        .from('auth.users')
-        .delete()
-        .match({'id': user!.id}).execute();
-
-    if (response.error != null) {
-      context.showLongErrorSnackBar(message: localizations.generalError);
-      return;
-    }
 
     if (!mounted) {
       return;
@@ -92,6 +52,9 @@ class _SettingsScreenState extends AuthRequiredState<SettingsScreen>
     final settings = GlobalValuesManager.settings!;
     final localizations = AppLocalizations.of(context)!;
 
+    return SizedBox();
+
+    /*
     return PlatformScaffold(
       appBar: PlatformAppBar(
         title: Text(localizations.settingsScreenTitle),
@@ -138,27 +101,6 @@ class _SettingsScreenState extends AuthRequiredState<SettingsScreen>
                           ],
                         ),
                       ),
-                      SettingsTile(
-                        leading: const Icon(Icons.logout_rounded),
-                        title: Text(localizations
-                            .settingsScreenAccountSectionLogoutLabel),
-                        onPressed: (_) async {
-                          cache.clear();
-                          storage.deleteAll();
-
-                          await callWithLoading(supabase.auth.signOut);
-
-                          if (!mounted) {
-                            return;
-                          }
-
-                          Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            WelcomeScreen.ID,
-                            (route) => false,
-                          );
-                        },
-                      )
                     ],
                   ),
                   SettingsSection(
@@ -263,6 +205,6 @@ class _SettingsScreenState extends AuthRequiredState<SettingsScreen>
                 ],
               ),
             ),
-    );
+    );*/
   }
 }
