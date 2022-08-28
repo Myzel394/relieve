@@ -20,13 +20,18 @@ class Memories extends PropertyChangeNotifier<String> {
       return Memories();
     }
 
-    final data = jsonDecode(rawData);
-    final memories =
-        data.map<Memory>((memory) => Memory.parse(memory)).toList();
+    try {
+      final data = jsonDecode(rawData);
+      final memories = List<Memory>.from(
+        data['memories'].map((memory) => Memory.parse(memory)),
+      );
 
-    return Memories(
-      memories: memories,
-    ).._sortMemories();
+      return Memories(
+        memories: memories,
+      ).._sortMemories();
+    } catch (error) {
+      return Memories();
+    }
   }
 
   List<Memory> get memories => _memories;
@@ -63,7 +68,7 @@ class Memories extends PropertyChangeNotifier<String> {
   Future<void> save() async {
     final data = toJSON();
 
-    await storage.write(key: MEMORIES_KEY, value: data.toString());
+    await storage.write(key: MEMORIES_KEY, value: jsonEncode(data));
   }
 
   Map<String, dynamic> toJSON() => {

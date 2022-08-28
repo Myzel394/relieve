@@ -28,22 +28,30 @@ void main() async {
   GlobalValuesManager.initialize();
 
   final initialPage = await StartupPageManager.getPageWithFallback();
+  final memories = await Memories.restore();
 
-  runApp(MyApp(initialPage: initialPage));
+  runApp(
+    MyApp(
+      initialPage: initialPage,
+      memories: memories,
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   final String initialPage;
+  final Memories memories;
 
   const MyApp({
     required this.initialPage,
+    required this.memories,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => Memories(),
+    return ChangeNotifierProvider.value(
+      value: memories,
       child: PlatformApp(
         title: 'Relieve',
         material: (_, __) => MaterialAppData(
