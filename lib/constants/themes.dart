@@ -12,6 +12,9 @@ final LIGHT_THEME_MATERIAL = ThemeData(
           fontSize: 32,
           fontWeight: FontWeight.w500,
         ),
+        bodyText1: ThemeData().textTheme.bodyText1!.copyWith(
+              height: 1.5,
+            ),
       ),
   inputDecorationTheme: InputDecorationTheme(
     filled: true,
@@ -33,6 +36,9 @@ final DARK_THEME_MATERIAL = ThemeData.dark().copyWith(
           fontSize: 32,
           fontWeight: FontWeight.w500,
         ),
+        bodyText1: ThemeData.dark().textTheme.bodyText1!.copyWith(
+              height: 1.5,
+            ),
       ),
   inputDecorationTheme: InputDecorationTheme(
     filled: true,

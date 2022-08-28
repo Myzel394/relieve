@@ -166,6 +166,12 @@
   "timelineHelpContentTapTwiceExplanation": "Tap twice to see more details about your memory.",
 
 
+  "supportScreenTitle": "Support Relieve",
+  "supportScreenDescription": "Developing and maintaining apps is a hard job. If you want to help Relieve and my other apps keep improving, I would be very grateful about a small donation. If everyone donated just $1 (I'm not asking for more), I could focus my time completely on developing Relieve and my other apps.",
+  "supportScreenMethodsAvailable": "If you like to make a small donation, you can do so via GitHub, I also accept cryptocurrency donations.",
+  "supportScreenOpenLink": "See available methods",
+
+
   "helpSheetDontShowAgain": "Don't show this help sheet again",
 
 

@@ -78,5 +78,11 @@
 
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>Accessing your location allows you to tag your memories</string>
+
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>https</string>
+    </array>
+
 </dict>
 </plist>

@@ -16,6 +16,7 @@ import 'package:quid_faciam_hodie/models/settings.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 import 'settings_screen/dropdown_tile.dart';
+import 'support_screen.dart';
 
 const storage = FlutterSecureStorage();
 
@@ -161,6 +162,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           .settingsScreenResetHelpSheetsResetSuccessfully,
                     );
                   },
+                ),
+                SettingsTile.navigation(
+                  title: Text(localizations.supportScreenTitle),
+                  onPressed: (_) =>
+                      Navigator.pushNamed(context, SupportScreen.ID),
+                  leading: Icon(context.platformIcons.favoriteSolid),
                 )
               ],
             ),
