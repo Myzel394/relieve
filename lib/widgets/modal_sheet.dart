@@ -14,36 +14,42 @@ class ModalSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: PlatformWidget(
-        material: (_, __) => Container(
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(LARGE_SPACE),
-              topRight: Radius.circular(LARGE_SPACE),
-            ),
-            color: getSheetColor(context),
+    return PlatformWidget(
+      material: (_, __) => Container(
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(LARGE_SPACE),
+            topRight: Radius.circular(LARGE_SPACE),
           ),
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(
-              vertical: LARGE_SPACE,
-              horizontal: MEDIUM_SPACE,
-            ),
-            child: child,
+          color: getSheetColor(context),
+        ),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.only(
+            top: LARGE_SPACE,
+            left: MEDIUM_SPACE,
+            right: MEDIUM_SPACE,
+            bottom: SMALL_SPACE,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              child,
+            ],
           ),
         ),
-        cupertino: (_, __) => CupertinoPopupSurface(
-          isSurfacePainted: false,
-          child: Container(
-            color: Colors.white,
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(
-                vertical: LARGE_SPACE,
-                horizontal: MEDIUM_SPACE,
-              ),
-              child: child,
-            ),
+      ),
+      cupertino: (_, __) => CupertinoPopupSurface(
+        isSurfacePainted: true,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(
+            vertical: LARGE_SPACE,
+            horizontal: MEDIUM_SPACE,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              child,
+            ],
           ),
         ),
       ),

@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:relieve/constants/spacing.dart';
 import 'package:relieve/utils/theme.dart';
+import 'package:relieve/widgets/modal_sheet.dart';
 
 class HelpSheetForm extends StatefulWidget {
   final String title;
@@ -25,15 +26,8 @@ class _HelpSheetFormState extends State<HelpSheetForm> {
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
 
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: LARGE_SPACE,
-        left: MEDIUM_SPACE,
-        right: MEDIUM_SPACE,
-        bottom: SMALL_SPACE,
-      ),
+    return ModalSheet(
       child: Column(
-        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Text(
             widget.title,
@@ -47,7 +41,7 @@ class _HelpSheetFormState extends State<HelpSheetForm> {
             child: Text(localizations.generalUnderstoodButtonLabel),
             onPressed: () => Navigator.pop(context, dontShowSheetAgain),
           ),
-          const SizedBox(height: SMALL_SPACE),
+          const SizedBox(height: MEDIUM_SPACE),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -65,9 +59,11 @@ class _HelpSheetFormState extends State<HelpSheetForm> {
                 },
               ),
               const SizedBox(width: SMALL_SPACE),
-              Text(
-                localizations.helpSheetDontShowAgain,
-                style: getBodyTextTextStyle(context),
+              Flexible(
+                child: Text(
+                  localizations.helpSheetDontShowAgain,
+                  style: getBodyTextTextStyle(context),
+                ),
               )
             ],
           ),
