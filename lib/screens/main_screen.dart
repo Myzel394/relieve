@@ -113,10 +113,11 @@ class _MainScreenState extends State<MainScreen> with Loadable {
     _updateCamera(state);
   }
 
-  void loadCameraIfNecessary(final bool isAppFocused) {
+  void loadCameraIfNecessary(final bool isAppFocused) async {
     if (isAppFocused) {
       onNewCameraSelected(GlobalValuesManager.cameras[0]);
     } else {
+      await cancelRecording();
       controller?.dispose();
       controller = null;
     }
@@ -134,13 +135,14 @@ class _MainScreenState extends State<MainScreen> with Loadable {
     });
   }
 
-  void _updateCamera(final AppLifecycleState state) {
+  void _updateCamera(final AppLifecycleState state) async {
     // App state changed before we got the chance to initialize.
     if (controller == null || controller?.value.isInitialized != true) {
       return;
     }
 
     if (state == AppLifecycleState.inactive) {
+      await cancelRecording();
       controller?.dispose();
     } else if (state == AppLifecycleState.resumed) {
       onNewCameraSelected(
@@ -415,6 +417,16 @@ class _MainScreenState extends State<MainScreen> with Loadable {
     }
   }
 
+  Future<void> cancelRecording() async {
+    if (controller!.value.isRecordingVideo) {
+      setState(() {
+        isRecording = false;
+      });
+
+      await controller!.stopVideoRecording();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
@@ -554,13 +566,7 @@ class _MainScreenState extends State<MainScreen> with Loadable {
                                       SECONDARY_BUTTONS_DURATION_MULTIPLIER,
                                   child: isRecording
                                       ? CancelRecordingButton(
-                                          onCancel: () {
-                                            setState(() {
-                                              isRecording = false;
-                                            });
-
-                                            controller!.stopVideoRecording();
-                                          },
+                                          onCancel: cancelRecording,
                                         )
                                       : ChangeCameraButton(
                                           disabled: lockCamera || isRecording,
