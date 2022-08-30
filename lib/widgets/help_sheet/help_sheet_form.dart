@@ -3,7 +3,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:quid_faciam_hodie/constants/spacing.dart';
 import 'package:quid_faciam_hodie/utils/theme.dart';
-import 'package:quid_faciam_hodie/widgets/modal_sheet.dart';
 
 class HelpSheetForm extends StatefulWidget {
   final String title;
@@ -26,8 +25,15 @@ class _HelpSheetFormState extends State<HelpSheetForm> {
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
 
-    return ModalSheet(
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: LARGE_SPACE,
+        left: MEDIUM_SPACE,
+        right: MEDIUM_SPACE,
+        bottom: SMALL_SPACE,
+      ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Text(
             widget.title,

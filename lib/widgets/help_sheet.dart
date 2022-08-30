@@ -6,6 +6,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:quid_faciam_hodie/constants/help_sheet_id.dart';
 import 'package:quid_faciam_hodie/constants/spacing.dart';
 import 'package:quid_faciam_hodie/managers/user_help_sheets_manager.dart';
+import 'package:quid_faciam_hodie/utils/theme.dart';
 import 'package:quid_faciam_hodie/widgets/help_sheet/help_sheet_form.dart';
 
 class HelpSheet extends StatefulWidget {
@@ -89,11 +90,13 @@ class _HelpSheetState extends State<HelpSheet> {
         material: MaterialModalSheetData(
           isDismissible: false,
           isScrollControlled: true,
-          backgroundColor: Colors.transparent,
+          backgroundColor: getSheetColor(context),
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(LARGE_SPACE),
               topRight: Radius.circular(LARGE_SPACE),
+              bottomLeft: Radius.zero,
+              bottomRight: Radius.zero,
             ),
           ),
         ),
