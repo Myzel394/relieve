@@ -4,11 +4,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:provider/provider.dart';
-import 'package:quid_faciam_hodie/constants/spacing.dart';
-import 'package:quid_faciam_hodie/managers/calendar_manager.dart';
-import 'package:quid_faciam_hodie/models/calendar_model.dart';
-import 'package:quid_faciam_hodie/models/memories.dart';
-import 'package:quid_faciam_hodie/screens/calendar_screen/save_to_gallery_modal.dart';
+import 'package:relieve/constants/spacing.dart';
+import 'package:relieve/managers/calendar_manager.dart';
+import 'package:relieve/models/calendar_model.dart';
+import 'package:relieve/models/memories.dart';
+import 'package:relieve/screens/calendar_screen/save_to_gallery_modal.dart';
 
 import 'calendar_screen/calendar_month.dart';
 import 'calendar_screen/days_of_week_strip.dart';

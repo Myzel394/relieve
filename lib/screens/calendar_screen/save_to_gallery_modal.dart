@@ -1,10 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:quid_faciam_hodie/constants/spacing.dart';
-import 'package:quid_faciam_hodie/foreign_types/memory.dart';
-import 'package:quid_faciam_hodie/utils/theme.dart';
-import 'package:quid_faciam_hodie/widgets/modal_sheet.dart';
+import 'package:relieve/constants/spacing.dart';
+import 'package:relieve/foreign_types/memory.dart';
+import 'package:relieve/utils/theme.dart';
+import 'package:relieve/widgets/modal_sheet.dart';
 
 class SaveToGalleryModal extends StatefulWidget {
   final Iterable<Memory> memories;
@@ -32,9 +32,11 @@ class _SaveToGalleryModalState extends State<SaveToGalleryModal> {
     for (final memory in widget.memories) {
       await memory.saveFileToGallery();
 
-      setState(() {
-        currentMemory = min(widget.memories.length - 1, currentMemory + 1);
-      });
+      if (memory != widget.memories.last) {
+        setState(() {
+          currentMemory = min(widget.memories.length - 1, currentMemory + 1);
+        });
+      }
     }
 
     if (mounted) {
@@ -53,7 +55,7 @@ class _SaveToGalleryModalState extends State<SaveToGalleryModal> {
           ),
           const SizedBox(height: LARGE_SPACE),
           Text(
-            '${currentMemory}/${widget.memories.length}',
+            '$currentMemory/${widget.memories.length}',
             style: getBodyTextTextStyle(context),
           ),
           const SizedBox(height: MEDIUM_SPACE),

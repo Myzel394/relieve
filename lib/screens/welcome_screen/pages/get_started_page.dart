@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:quid_faciam_hodie/constants/spacing.dart';
-import 'package:quid_faciam_hodie/managers/startup_page_manager.dart';
-import 'package:quid_faciam_hodie/screens/grant_permission_screen.dart';
-import 'package:quid_faciam_hodie/screens/main_screen.dart';
-import 'package:quid_faciam_hodie/screens/welcome_screen/crabs/logo.dart';
-import 'package:quid_faciam_hodie/utils/permissions.dart';
-import 'package:quid_faciam_hodie/utils/theme.dart';
-import 'package:quid_faciam_hodie/widgets/icon_button_child.dart';
+import 'package:relieve/constants/spacing.dart';
+import 'package:relieve/managers/startup_page_manager.dart';
+import 'package:relieve/screens/grant_permission_screen.dart';
+import 'package:relieve/screens/main_screen.dart';
+import 'package:relieve/screens/welcome_screen/crabs/logo.dart';
+import 'package:relieve/utils/permissions.dart';
+import 'package:relieve/utils/theme.dart';
+import 'package:relieve/widgets/icon_button_child.dart';
 
 class GetStartedPage extends StatelessWidget {
   const GetStartedPage({Key? key}) : super(key: key);

@@ -2,16 +2,16 @@ import 'package:expandable_bottom_sheet/expandable_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:quid_faciam_hodie/constants/spacing.dart';
-import 'package:quid_faciam_hodie/foreign_types/memory_location.dart';
-import 'package:quid_faciam_hodie/utils/loadable.dart';
-import 'package:quid_faciam_hodie/utils/lookup_address.dart';
-import 'package:quid_faciam_hodie/utils/theme.dart';
-import 'package:quid_faciam_hodie/widgets/icon_button_child.dart';
-import 'package:quid_faciam_hodie/widgets/key_value_info.dart';
-import 'package:quid_faciam_hodie/widgets/platform_widgets/memory_cupertino_maps.dart';
-import 'package:quid_faciam_hodie/widgets/platform_widgets/memory_material_maps.dart';
-import 'package:quid_faciam_hodie/widgets/sheet_indicator.dart';
+import 'package:relieve/constants/spacing.dart';
+import 'package:relieve/foreign_types/memory_location.dart';
+import 'package:relieve/utils/loadable.dart';
+import 'package:relieve/utils/lookup_address.dart';
+import 'package:relieve/utils/theme.dart';
+import 'package:relieve/widgets/icon_button_child.dart';
+import 'package:relieve/widgets/key_value_info.dart';
+import 'package:relieve/widgets/platform_widgets/memory_cupertino_maps.dart';
+import 'package:relieve/widgets/platform_widgets/memory_material_maps.dart';
+import 'package:relieve/widgets/sheet_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MemoryMapScreen extends StatefulWidget {

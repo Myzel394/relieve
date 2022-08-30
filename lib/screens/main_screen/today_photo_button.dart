@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quid_faciam_hodie/constants/spacing.dart';
-import 'package:quid_faciam_hodie/models/memories.dart';
-import 'package:quid_faciam_hodie/screens/empty_screen.dart';
-import 'package:quid_faciam_hodie/screens/timeline_screen.dart';
-import 'package:quid_faciam_hodie/widgets/raw_memory_display.dart';
+import 'package:relieve/constants/spacing.dart';
+import 'package:relieve/models/memories.dart';
+import 'package:relieve/screens/empty_screen.dart';
+import 'package:relieve/screens/timeline_screen.dart';
+import 'package:relieve/widgets/raw_memory_display.dart';
 
 class TodayPhotoButton extends StatelessWidget {
   final VoidCallback onLeave;

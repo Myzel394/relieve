@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quid_faciam_hodie/controllers/status_controller.dart';
-import 'package:quid_faciam_hodie/enums.dart';
-import 'package:quid_faciam_hodie/foreign_types/memory.dart';
-import 'package:quid_faciam_hodie/models/timeline.dart';
-import 'package:quid_faciam_hodie/widgets/status.dart';
+import 'package:relieve/controllers/status_controller.dart';
+import 'package:relieve/enums.dart';
+import 'package:relieve/foreign_types/memory.dart';
+import 'package:relieve/models/timeline.dart';
+import 'package:relieve/widgets/status.dart';
 
 import 'memory_view.dart';
 

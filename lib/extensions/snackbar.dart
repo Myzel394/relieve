@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:quid_faciam_hodie/constants/values.dart';
+import 'package:relieve/constants/values.dart';
 
 extension ShowSnackBar on BuildContext {
   static ScaffoldFeatureController<SnackBar, SnackBarClosedReason>?

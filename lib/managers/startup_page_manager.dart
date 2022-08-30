@@ -1,6 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:quid_faciam_hodie/constants/storage_keys.dart';
-import 'package:quid_faciam_hodie/screens/welcome_screen.dart';
+import 'package:relieve/constants/storage_keys.dart';
+import 'package:relieve/screens/welcome_screen.dart';
 
 const storage = FlutterSecureStorage();
 

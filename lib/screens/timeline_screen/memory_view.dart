@@ -1,9 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:quid_faciam_hodie/enums.dart';
-import 'package:quid_faciam_hodie/foreign_types/memory.dart';
-import 'package:quid_faciam_hodie/widgets/raw_memory_display.dart';
+import 'package:relieve/enums.dart';
+import 'package:relieve/foreign_types/memory.dart';
+import 'package:relieve/widgets/raw_memory_display.dart';
 import 'package:video_player/video_player.dart';
 
 class MemoryView extends StatefulWidget {

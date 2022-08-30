@@ -1,6 +1,6 @@
-import 'package:quid_faciam_hodie/extensions/date.dart';
-import 'package:quid_faciam_hodie/foreign_types/memory.dart';
-import 'package:quid_faciam_hodie/helpers/iterate_months.dart';
+import 'package:relieve/extensions/date.dart';
+import 'package:relieve/foreign_types/memory.dart';
+import 'package:relieve/helpers/iterate_months.dart';
 
 class CalendarManager {
   final Map<DateTime, Set<String>> _values;

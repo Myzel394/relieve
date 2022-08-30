@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:property_change_notifier/property_change_notifier.dart';
-import 'package:quid_faciam_hodie/extensions/date.dart';
-import 'package:quid_faciam_hodie/foreign_types/memory.dart';
+import 'package:relieve/extensions/date.dart';
+import 'package:relieve/foreign_types/memory.dart';
 
 class TimelineModel extends PropertyChangeNotifier<String> {
   final Map<DateTime, List<Memory>> _timeline;

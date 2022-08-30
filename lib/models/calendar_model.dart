@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:quid_faciam_hodie/extensions/date.dart';
-import 'package:quid_faciam_hodie/foreign_types/memory.dart';
+import 'package:relieve/extensions/date.dart';
+import 'package:relieve/foreign_types/memory.dart';
 
 // The `CalendarModel` is only used to give the calendar day's a way to
 // send whether they have been pressed to the parent widget.

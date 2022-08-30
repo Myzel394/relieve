@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:quid_faciam_hodie/constants/spacing.dart';
-import 'package:quid_faciam_hodie/widgets/icon_button_child.dart';
+import 'package:relieve/constants/spacing.dart';
+import 'package:relieve/widgets/icon_button_child.dart';
 
 class PermissionsRequiredPage extends StatefulWidget {
   final VoidCallback onPermissionsGranted;

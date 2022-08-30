@@ -2,8 +2,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:quid_faciam_hodie/enums/record_button_behavior.dart';
-import 'package:quid_faciam_hodie/models/settings.dart';
+import 'package:relieve/enums/record_button_behavior.dart';
+import 'package:relieve/models/settings.dart';
 
 class RecordButton extends StatefulWidget {
   final bool active;

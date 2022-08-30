@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:quid_faciam_hodie/constants/spacing.dart';
-import 'package:quid_faciam_hodie/utils/format_zoom_level.dart';
+import 'package:relieve/constants/spacing.dart';
+import 'package:relieve/utils/format_zoom_level.dart';
 
 class ZoomLevelOverlay extends StatefulWidget {
   final double zoomLevel;

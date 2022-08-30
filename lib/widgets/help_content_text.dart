@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quid_faciam_hodie/utils/theme.dart';
+import 'package:relieve/utils/theme.dart';
 
 class HelpContentText extends StatelessWidget {
   final String text;

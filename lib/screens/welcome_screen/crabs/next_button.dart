@@ -2,7 +2,7 @@ import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:quid_faciam_hodie/widgets/icon_button_child.dart';
+import 'package:relieve/widgets/icon_button_child.dart';
 
 class CrabNextButton extends StatelessWidget {
   final VoidCallback onPressed;

@@ -1,7 +1,7 @@
 import 'package:apple_maps_flutter/apple_maps_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:quid_faciam_hodie/foreign_types/memory_location.dart';
+import 'package:relieve/foreign_types/memory_location.dart';
 
 class MemoryCupertinoMaps extends StatefulWidget {
   final MemoryLocation location;

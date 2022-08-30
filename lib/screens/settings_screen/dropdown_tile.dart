@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:quid_faciam_hodie/widgets/cupertino_dropdown.dart';
+import 'package:relieve/widgets/cupertino_dropdown.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 const IN_DURATION = Duration(seconds: 1);

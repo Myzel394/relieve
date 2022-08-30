@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:quid_faciam_hodie/constants/spacing.dart';
-import 'package:quid_faciam_hodie/screens/welcome_screen/crabs/next_button.dart';
-import 'package:quid_faciam_hodie/utils/theme.dart';
+import 'package:relieve/constants/spacing.dart';
+import 'package:relieve/screens/welcome_screen/crabs/next_button.dart';
+import 'package:relieve/utils/theme.dart';
 
 class CreateMemoriesPage extends StatelessWidget {
   final VoidCallback onNextPage;

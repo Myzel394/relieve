@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:quid_faciam_hodie/constants/help_sheet_id.dart';
-import 'package:quid_faciam_hodie/constants/spacing.dart';
-import 'package:quid_faciam_hodie/managers/user_help_sheets_manager.dart';
-import 'package:quid_faciam_hodie/utils/theme.dart';
-import 'package:quid_faciam_hodie/widgets/help_sheet/help_sheet_form.dart';
+import 'package:relieve/constants/help_sheet_id.dart';
+import 'package:relieve/constants/spacing.dart';
+import 'package:relieve/managers/user_help_sheets_manager.dart';
+import 'package:relieve/utils/theme.dart';
+import 'package:relieve/widgets/help_sheet/help_sheet_form.dart';
 
 class HelpSheet extends StatefulWidget {
   final Widget child;

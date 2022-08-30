@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:quid_faciam_hodie/constants/spacing.dart';
-import 'package:quid_faciam_hodie/screens/welcome_screen/pages/view_memories_page.dart';
+import 'package:relieve/constants/spacing.dart';
+import 'package:relieve/screens/welcome_screen/pages/view_memories_page.dart';
 
 import 'welcome_screen/pages/create_memories_page.dart';
 import 'welcome_screen/pages/get_started_page.dart';

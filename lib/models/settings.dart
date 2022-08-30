@@ -4,9 +4,9 @@ import 'package:camera/camera.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:quid_faciam_hodie/constants/storage_keys.dart';
-import 'package:quid_faciam_hodie/enums/record_button_behavior.dart';
-import 'package:quid_faciam_hodie/utils/string_to_bool.dart';
+import 'package:relieve/constants/storage_keys.dart';
+import 'package:relieve/enums/record_button_behavior.dart';
+import 'package:relieve/utils/string_to_bool.dart';
 
 const secure = FlutterSecureStorage();
 

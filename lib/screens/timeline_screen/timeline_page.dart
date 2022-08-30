@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:quid_faciam_hodie/foreign_types/memory.dart';
-import 'package:quid_faciam_hodie/models/timeline.dart';
+import 'package:relieve/foreign_types/memory.dart';
+import 'package:relieve/models/timeline.dart';
 
 import 'memory_sheet.dart';
 import 'memory_slide.dart';

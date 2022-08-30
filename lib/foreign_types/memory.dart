@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:quid_faciam_hodie/enums.dart';
+import 'package:relieve/enums.dart';
 import 'package:uuid/uuid.dart';
 
 import 'memory_location.dart';

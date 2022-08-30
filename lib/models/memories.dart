@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:collection/collection.dart';
 import 'package:property_change_notifier/property_change_notifier.dart';
-import 'package:quid_faciam_hodie/constants/storage_keys.dart';
-import 'package:quid_faciam_hodie/foreign_types/memory.dart';
-import 'package:quid_faciam_hodie/screens/welcome_screen.dart';
+import 'package:relieve/constants/storage_keys.dart';
+import 'package:relieve/foreign_types/memory.dart';
+import 'package:relieve/screens/welcome_screen.dart';
 
 class Memories extends PropertyChangeNotifier<String> {
   late final List<Memory> _memories;
