@@ -28,12 +28,12 @@ class _MemoryDeleteDialogState extends State<MemoryDeleteDialog> with Loadable {
     final localizations = AppLocalizations.of(context)!;
 
     return PlatformAlertDialog(
-      title: Text(localizations.settingsScreenDeleteFileTitle),
+      title: Text(localizations.memorySheetDeleteFileTitle),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Text(
-            localizations.settingsScreenDeleteFileDescription,
+            localizations.memorySheetDeleteFileDescription,
             style: getBodyTextTextStyle(context),
           ),
           const SizedBox(height: MEDIUM_SPACE),
@@ -45,7 +45,7 @@ class _MemoryDeleteDialogState extends State<MemoryDeleteDialog> with Loadable {
                 Flexible(
                   child: Text(
                     localizations
-                        .settingsScreenDeleteFileGalleryDeletionDescription,
+                        .memorySheetDeleteFileGalleryDeletionDescription,
                     style: getBodyTextTextStyle(context),
                   ),
                 )
@@ -53,8 +53,7 @@ class _MemoryDeleteDialogState extends State<MemoryDeleteDialog> with Loadable {
             )
           else ...[
             Text(
-              localizations
-                  .settingsScreenDeleteFileGalleryDeletionDownloadOffer,
+              localizations.memorySheetDeleteFileGalleryDeletionDownloadOffer,
               style: getBodyTextTextStyle(context),
             ),
             const SizedBox(height: LARGE_SPACE),
@@ -105,7 +104,7 @@ class _MemoryDeleteDialogState extends State<MemoryDeleteDialog> with Loadable {
                 },
           child: IconButtonChild(
             icon: Icon(context.platformIcons.delete),
-            label: Text(localizations.settingsScreenDeleteFileDeleteLabel),
+            label: Text(localizations.memorySheetDeleteFileDeleteLabel),
           ),
         ),
       ],

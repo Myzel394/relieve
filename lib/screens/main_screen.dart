@@ -306,7 +306,8 @@ class _MainScreenState extends State<MainScreen> with Loadable {
 
       final file = File((await controller!.takePicture()).path);
 
-      final locationData = await getLocation(file);
+      final locationData =
+          settings.tagWithLocation ? await getLocation(file) : null;
       final annotation = await getAnnotation();
 
       _showUploadingPhotoAnimation(file);
@@ -375,7 +376,8 @@ class _MainScreenState extends State<MainScreen> with Loadable {
       final file = File((await controller!.stopVideoRecording()).path);
 
       final annotation = await getAnnotation();
-      final locationData = await getLocation();
+      final locationData =
+          settings.tagWithLocation ? await getLocation() : null;
 
       if (!mounted) {
         return;

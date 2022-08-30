@@ -1,4 +1,4 @@
-bool? stringToBool(final String value) {
+bool? stringToBool(final String? value) {
   switch (value) {
     case 'true':
       return true;

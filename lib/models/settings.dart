@@ -17,6 +17,7 @@ class Settings extends ChangeNotifier {
   bool _askForMemoryAnnotations = false;
   bool _recordOnStartup = false;
   bool _saveToGallery = true;
+  bool _tagWithLocation = false;
 
   Settings({
     final ResolutionPreset? resolution,
@@ -24,18 +25,21 @@ class Settings extends ChangeNotifier {
     final bool? askForMemoryAnnotations,
     final bool? recordOnStartup,
     final bool? saveToGallery,
+    final bool? tagWithLocation,
   })  : _resolution = resolution ?? ResolutionPreset.max,
         _askForMemoryAnnotations = askForMemoryAnnotations ?? false,
         _recordOnStartup = recordOnStartup ?? false,
         _saveToGallery = saveToGallery ?? false,
         _recordButtonBehavior =
-            recordButtonBehavior ?? RecordButtonBehavior.holdRecording;
+            recordButtonBehavior ?? RecordButtonBehavior.holdRecording,
+        _tagWithLocation = tagWithLocation ?? true;
 
   ResolutionPreset get resolution => _resolution;
   RecordButtonBehavior get recordButtonBehavior => _recordButtonBehavior;
   bool get askForMemoryAnnotations => _askForMemoryAnnotations;
   bool get recordOnStartup => _recordOnStartup;
   bool get saveToGallery => _saveToGallery;
+  bool get tagWithLocation => _tagWithLocation;
 
   Map<String, dynamic> toJSON() => {
         'resolution': _resolution.toString(),
@@ -43,6 +47,7 @@ class Settings extends ChangeNotifier {
         'askForMemoryAnnotations': _askForMemoryAnnotations ? 'true' : 'false',
         'recordOnStartup': _recordOnStartup ? 'true' : 'false',
         'saveToGallery': _saveToGallery ? 'true' : 'false',
+        'tagWithLocation': _tagWithLocation ? 'true' : 'false',
       };
 
   Future<void> save() async {
@@ -71,12 +76,16 @@ class Settings extends ChangeNotifier {
     final askForMemoryAnnotations =
         stringToBool(data['askForMemoryAnnotations']);
     final recordOnStartup = stringToBool(data['recordOnStartup']);
+    final saveToGallery = stringToBool(data['saveToGallery']);
+    final tagWithLocation = stringToBool(data['tagWithLocation']);
 
     return Settings(
       resolution: resolution,
       askForMemoryAnnotations: askForMemoryAnnotations,
       recordOnStartup: recordOnStartup,
       recordButtonBehavior: recordButtonBehavior,
+      tagWithLocation: tagWithLocation,
+      saveToGallery: saveToGallery,
     );
   }
 
@@ -106,6 +115,12 @@ class Settings extends ChangeNotifier {
 
   void setSaveToGallery(final bool saveToGallery) {
     _saveToGallery = saveToGallery;
+    notifyListeners();
+    save();
+  }
+
+  void setTagWithLocation(final bool tagWithLocation) {
+    _tagWithLocation = tagWithLocation;
     notifyListeners();
     save();
   }

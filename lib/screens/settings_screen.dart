@@ -31,6 +31,7 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool? hasGrantedMediaAccess;
+  bool? hasGrantedLocationAccess;
 
   @override
   void initState() {
@@ -42,6 +43,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           return;
         }
         checkMediaPermissionStatus();
+        checkLocationPermissionStatus();
       },
     );
   }
@@ -60,6 +62,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
+  Future<void> checkLocationPermissionStatus() async {
+    final hasGranted = await Permission.location.isGranted;
+
+    setState(() {
+      hasGrantedLocationAccess = hasGranted;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final settings = context.watch<Settings>();
@@ -75,7 +85,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           sections: [
             SettingsSection(
               title: Text(
-                localizations.settingsScreenGeneralSectionTitle,
+                localizations.settingsScreenCameraBehaviorSectionTitle,
               ),
               tiles: [
                 SettingsDropdownTile<ResolutionPreset>(
@@ -100,43 +110,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   values: RecordButtonBehavior.values,
                 ),
                 SettingsTile.switchTile(
-                  initialValue: settings.saveToGallery,
-                  onToggle: (newValue) async {
-                    if (hasGrantedMediaAccess == false) {
-                      final status = await Permission.photosAddOnly.request();
-
-                      if (status.isGranted) {
-                        setState(() {
-                          hasGrantedMediaAccess = true;
-                        });
-                      }
-                    }
-
-                    if (hasGrantedMediaAccess == true) {
-                      settings.setSaveToGallery(newValue);
-                    }
-                  },
-                  title: Text(
-                    localizations.settingsScreenSaveToGalleryLabel,
-                  ),
-                  enabled: hasGrantedMediaAccess != null,
-                  description: hasGrantedMediaAccess == null
-                      ? Text(
-                          localizations.generalLoadingLabel,
-                        )
-                      : null,
-                  leading: Icon(context.platformIcons.collections),
-                ),
-                SettingsTile.switchTile(
-                  initialValue: settings.askForMemoryAnnotations,
-                  onToggle: settings.setAskForMemoryAnnotations,
-                  leading: Icon(context.platformIcons.pen),
-                  title: Text(
-                    localizations
-                        .settingsScreenGeneralSectionAskForMemoryAnnotationsLabel,
-                  ),
-                ),
-                SettingsTile.switchTile(
                   initialValue: settings.recordOnStartup,
                   onToggle: settings.setRecordOnStartup,
                   leading: Icon(context.platformIcons.photoCamera),
@@ -145,6 +118,57 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         .settingsScreenGeneralSectionStartRecordingOnStartupLabel,
                   ),
                 ),
+              ],
+            ),
+            SettingsSection(
+              title: Text(
+                localizations.settingsScreenMemorySectionTitle,
+              ),
+              tiles: [
+                SettingsTile.switchTile(
+                  initialValue: settings.saveToGallery,
+                  onToggle: settings.setSaveToGallery,
+                  title: Text(
+                    localizations.settingsScreenMemorySectionSaveToGalleryLabel,
+                  ),
+                  enabled: hasGrantedMediaAccess != null,
+                  description: hasGrantedMediaAccess == false
+                      ? Text(
+                          localizations.generalDeniedBecausePermissionIsMissing,
+                        )
+                      : null,
+                  leading: Icon(context.platformIcons.collections),
+                ),
+                SettingsTile.switchTile(
+                  enabled: hasGrantedLocationAccess == true,
+                  initialValue: settings.tagWithLocation,
+                  onToggle: settings.setTagWithLocation,
+                  leading: Icon(context.platformIcons.location),
+                  title: Text(
+                    localizations
+                        .settingsScreenMemorySectionTagWithLocationLabel,
+                  ),
+                  description: hasGrantedLocationAccess == false
+                      ? Text(
+                          localizations.generalDeniedBecausePermissionIsMissing)
+                      : null,
+                ),
+                SettingsTile.switchTile(
+                  initialValue: settings.askForMemoryAnnotations,
+                  onToggle: settings.setAskForMemoryAnnotations,
+                  leading: Icon(context.platformIcons.pen),
+                  title: Text(
+                    localizations
+                        .settingsScreenMemorySectionAskForMemoryAnnotationsLabel,
+                  ),
+                ),
+              ],
+            ),
+            SettingsSection(
+              title: Text(
+                localizations.settingsScreenOtherSectionTitle,
+              ),
+              tiles: [
                 SettingsTile(
                   leading: Icon(context.platformIcons.help),
                   title: Text(
