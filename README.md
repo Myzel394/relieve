@@ -46,4 +46,4 @@ Find out what you did all these days and unlock moments you completely forgot!
 
 ## Note regarding the original app
 
-The original app to Relieve is [Quid Faciam Hodie?](https://github.com/Myzel394/quid_faciam_hodie). This app was submitted as part of the [Supabase Hackathon 2022](https://supabase.com/blog/launch-week-5-hackathon). This app isn't maintained anymore. Relieve doesn't rely on Supabase and will be maintained.
+The original app to Relieve is [Quid Faciam Hodie?](https://github.com/Myzel394/relieve). This app was submitted as part of the [Supabase Hackathon 2022](https://supabase.com/blog/launch-week-5-hackathon). This app isn't maintained anymore. Relieve doesn't rely on Supabase and will be maintained.

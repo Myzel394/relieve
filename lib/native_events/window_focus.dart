@@ -4,7 +4,7 @@ typedef WindowFocusChangeFunction = void Function(bool);
 
 class EventChannelWindowFocus {
   static const MethodChannel _channel =
-      const MethodChannel('floss.myzel394.quid_faciam_hodie/window_focus');
+      const MethodChannel('floss.myzel394.relieve/window_focus');
   static List<Function> _listeners = [];
 
   static void initialize() {

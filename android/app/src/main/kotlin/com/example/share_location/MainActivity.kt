@@ -1,4 +1,4 @@
-package floss.myzel394.quid_faciam_hodie
+package floss.myzel394.relieve
 
 import android.annotation.SuppressLint
 import io.flutter.embedding.android.FlutterActivity
@@ -7,7 +7,7 @@ import io.flutter.plugin.common.MethodChannel
 
 
 class MainActivity: FlutterActivity() {
-    val CHANNEL_ID = "floss.myzel394.quid_faciam_hodie/window_focus"
+    val CHANNEL_ID = "floss.myzel394.relieve/window_focus"
 
     private var channel: MethodChannel? = null
 
