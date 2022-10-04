@@ -6,63 +6,40 @@ on:
       - master
 
 jobs:
-  version:
-    name: Create version number
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: Fetch all history for all tags and branches
-        run: |
-          git fetch --prune --depth=10000
-      - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v0.9.2
-        with:
-          versionSpec: '5.2.x'
-      - name: Use GitVersion
-        id: gitversion
-        uses: gittools/actions/gitversion/execute@v0.9.2
-      - name: Create version.txt with nuGetVersion
-        run: echo ${{ steps.gitversion.outputs.nuGetVersion  }} > version.txt
-      - name: Upload version.txt
-        uses: actions/upload-artifact@v2
-        with:
-          name: gitversion
-          path: version.txt
-
   build:
-    name: Build APK and Create release
-    needs: [ version ]
+    # This job will run on ubuntu virtual machine
     runs-on: ubuntu-latest
     steps:
+
+      # Setup Java environment in order to build the Android app.
       - uses: actions/checkout@v1
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
+
+      # Setup the flutter environment.
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: '1.17.0'
-      - name: Get version.txt
-        uses: actions/download-artifact@v2
-        with:
-          name: gitversion
-      - name: Create new file without newline char from version.txt
-        run: tr -d '\n' < version.txt > version1.txt
-      - name: Read version
-        id: version
-        uses: juliangruber/read-file-action@v1
-        with:
-          path: version1.txt
-      - name: Update version in YAML
-        run: sed -i 's/99.99.99+99/${{ steps.version.outputs.content }}+${{ github.run_number }}/g' pubspec.yaml
+          channel: 'beta' # 'dev', 'alpha', default to: 'stable'
+          # flutter-version: '1.12.x' # you can also specify exact version of flutter
+
+      # Get flutter dependencies.
       - run: flutter pub get
+
+      # Check for any formatting issues in the code.
+      - run: flutter format --set-exit-if-changed .
+
+      # Statically analyze the Dart code for any errors.
+      - run: flutter analyze .
+
+      # Run widget tests for our flutter project.
       - run: flutter test
-      - run: flutter build apk --release --split-per-abi
-      - run: flutter build appbundle
-      - name: Create a Release in GitHub
-        uses: ncipollo/release-action@v1
+
+      # Build apk.
+      - run: flutter build apk
+
+      # Upload generated apk to the artifacts.
+      - uses: actions/upload-artifact@v1
         with:
-          artifacts: "build/app/outputs/apk/release/*.apk,build/app/outputs/bundle/release/app-release.aab"
-          token: ${{ secrets.GH_TOKEN }}
-          tag: ${{ steps.version.outputs.content }}
-          commit: ${{ github.sha }}
-          prerelease: true
+          name: release-apk
+          path: build/app/outputs/apk/release/app-release.apk
